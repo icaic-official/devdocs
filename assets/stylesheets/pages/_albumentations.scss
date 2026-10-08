@@ -1,0 +1,18 @@
+@use 'global/classes';
+@use 'pages/simple';
+
+._albumentations {
+  @extend %simple;
+
+  // the sections of the docstrings: Args, Returns, Examples...
+  h4 {
+    margin: 1.5em 0 .75em;
+    font-size: .8125rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--textColorLight);
+  }
+
+  dl._params > dt { margin-top: .75em; }
+  table._facts th { white-space: nowrap; }
+}

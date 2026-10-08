@@ -8,7 +8,7 @@ module Docs
   class Albumentations < FileScraper
     self.name = 'Albumentations'
     self.slug = 'albumentations'
-    self.type = 'simple'
+    self.type = 'albumentations'
     self.root_path = 'index.html'
     self.links = {
       home: 'https://albumentations.ai/',
