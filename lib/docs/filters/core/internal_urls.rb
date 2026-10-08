@@ -84,7 +84,8 @@ module Docs
     end
 
     def internal_path_to(url)
-      url = index_url if url == root_url
+      # links to the root page (also with a fragment) point to the index page
+      url = index_url.merge(fragment: url.fragment) if url.merge(fragment: nil) == root_url
       path = effective_url.relative_path_to(url)
       path = clean_path(path) if context[:decode_and_clean_paths]
       URL.new(path: path, query: url.query, fragment: url.fragment).to_s

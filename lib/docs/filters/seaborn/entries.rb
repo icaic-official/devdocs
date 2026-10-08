@@ -18,6 +18,7 @@ module Docs
       }.each_with_object({}) { |(type, names), hash| names.each { |name| hash[name] = type } }
 
       def get_name
+        return 'API reference' if slug == 'api'
         name = at_css('h1').content.delete('#¶').strip
         name << '()' if function_page?
         name
@@ -36,7 +37,7 @@ module Docs
       end
 
       def include_default_entry?
-        !root_page? && slug != 'api'
+        !root_page?
       end
 
       # Attributes and methods documented on the class pages themselves (most

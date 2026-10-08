@@ -1,5 +1,7 @@
 // @ts-check
 
+import { config } from "../../app/config.js";
+
 /**
  * One radio button in the theme picker.
  *
@@ -73,12 +75,16 @@ export const settingsPage = (settings) => `\
       }>Automatically switch to the latest version of a documentation
       <small>With this checked, enabling e.g. CMake 3.9 switches to CMake 3.10 once it becomes available.</small>
     </label>
-    <label class="_settings-label _hide-in-development">
+    ${
+      config.self_hosted
+        ? ""
+        : `<label class="_settings-label _hide-in-development">
       <input type="checkbox" form="settings" name="analyticsConsent"${
         settings.analyticsConsent ? " checked" : ""
       }>Enable tracking cookies
       <small>With this checked, we enable Google Analytics and Gauges to collect anonymous traffic information.</small>
-    </label>
+    </label>`
+    }
     <label class="_settings-label _hide-on-mobile">
       <input type="checkbox" form="settings" name="noDocSpecificIcon"${
         settings.noDocSpecificIcon ? " checked" : ""

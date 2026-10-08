@@ -10,8 +10,9 @@ module Docs
         at_css('h1')['data-type']
       end
 
+      # the module pages, so that links to them (e.g. from the home page) resolve
       def include_default_entry?
-        false
+        !root_page?
       end
 
       # The exported classes and functions, named as they're used

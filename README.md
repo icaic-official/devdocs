@@ -1,5 +1,6 @@
 > **ICAIC 2026 edition.** This copy of DevDocs only contains the documentation of the
-> components listed in the [ICAIC 2026 technical appendix](https://icaic-official.github.io/docs/technical-appendix.html).
+> components listed in the [ICAIC 2026 technical appendix](https://icaic-official.github.io/docs/technical-appendix.html):
+> Python 3.13 and its 37 Python packages, 38 docs in all, images included so that they work offline.
 > See [DEPLOY.md](DEPLOY.md) for how it's built and deployed, and
 > [config/icaic_docs.yml](config/icaic_docs.yml) for the list of docs.
 

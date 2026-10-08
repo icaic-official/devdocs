@@ -16,6 +16,9 @@ module Docs
         css('img[srcset]').remove_attribute('srcset')
         css('img').remove_attribute('width').remove_attribute('height')
 
+        # the User Guide's table of contents, which the home page already lists
+        css('a[href="user/index"]').each { |node| node.before(node.children).remove } if root_page?
+
         doc
       end
     end

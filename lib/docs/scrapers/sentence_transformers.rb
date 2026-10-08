@@ -22,6 +22,11 @@ module Docs
       # old URLs that redirect to the API pages, which would otherwise be stored twice
       %r{\Adocs/package_reference/(sentence_transformer/SentenceTransformer|sparse_encoder/SparseEncoder|cross_encoder/cross_encoder|quantization)\.html\z}i
     ]
+    # util.html redirects to util/index.html, whose links are relative to util/;
+    # stored as "util" they would point a level too high
+    options[:fix_urls] = ->(url) do
+      url.sub(%r{/docs/package_reference/util\.html(?=\z|#)}, '/docs/package_reference/util/index.html')
+    end
     options[:max_image_size] = 300_000
     options[:rate_limit] = 300
 

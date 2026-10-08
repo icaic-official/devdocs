@@ -8,6 +8,9 @@
 ._page {
   position: relative;
   min-height: calc(100% - 1.25rem);
+  // long identifiers (e.g. "mpl_toolkits.mplot3d.axes3d.Axes3D.set_zmargin")
+  // wrap rather than widen the page on small screens
+  overflow-wrap: break-word;
 
   &._page-error { position: static; }
 
@@ -25,6 +28,17 @@
   }
 
   a[href^="http:"], a[href^="https:"] { @extend %external-link; }
+
+  // Headings are flex containers (._lined-heading), which only let long
+  // words wrap with "anywhere"
+  h1, h2, h3, h4, h5, h6 { overflow-wrap: anywhere; }
+
+  // Equations wider than the page scroll on their own
+  math {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
 
   a:not([href]) {
     color: inherit;
@@ -95,7 +109,11 @@
   border-radius: 3px;
 }
 
-._attribution-link { @extend %internal-link; }
+._attribution-link {
+  @extend %internal-link;
+  // the URL is one long word, which would widen the page on small screens
+  overflow-wrap: anywhere;
+}
 
 //
 // Entry list

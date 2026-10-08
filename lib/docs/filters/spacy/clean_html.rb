@@ -97,6 +97,10 @@ module Docs
         end
         css('[role]').remove_attribute('role')
 
+        # badges without an image (the site's "Made with love and spaCy" one);
+        # the Markdown that follows them shows them anyway
+        css('img[src="#"]').remove
+
         doc
       end
 

@@ -10,7 +10,8 @@ import { page, resetAnalytics } from "./lib/page.js";
 import { settingsStore } from "./lib/settings_store.js";
 
 try {
-  if (config.env === "production") {
+  // self-hosted copies (config.self_hosted) have no analytics
+  if (config.env === "production" && !config.self_hosted) {
     if (settingsStore.get("analyticsConsent") === 1) {
       (function (i, s, o, g, r, a, m) {
         i["GoogleAnalyticsObject"] = r;

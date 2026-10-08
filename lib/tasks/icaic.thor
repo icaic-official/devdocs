@@ -31,6 +31,11 @@ class IcaicCLI < Thor
     missing = Icaic.doc_slugs.reject { |slug| File.exist?(File.join(Docs.store_path, slug, 'meta.json')) }
     abort "ERROR: failed to install #{missing.join(', ')}" if missing.any?
 
+    Icaic.doc_slugs.each do |slug|
+      failed = Icaic.make_images_offline(File.join(Docs.store_path, slug))
+      failed.each { |src| puts "WARNING: #{slug}: couldn't embed #{src}" }
+    end
+
     Docs.generate_manifest
     puts "Installed #{Icaic.doc_slugs.length} docs: #{Icaic.doc_slugs.join(', ')}"
   end
