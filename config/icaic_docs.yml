@@ -42,14 +42,14 @@
 - {package: albumentations, category: Computer vision, version: '2.0', doc: null}
 
 - {package: matplotlib, category: Visualization, version: '3.11', doc: matplotlib~3.11}
-- {package: seaborn, category: Visualization, version: '0.13', doc: null}
-- {package: plotly, category: Visualization, version: '7.1', doc: null}
+- {package: seaborn, category: Visualization, version: '0.13', doc: seaborn}
+- {package: plotly, category: Visualization, version: '7.1', doc: plotly}
 
-- {package: tqdm, category: Utilities/training, version: '4.70', doc: null}
-- {package: joblib, category: Utilities/training, version: '1.6', doc: null}
+- {package: tqdm, category: Utilities/training, version: '4.70', doc: tqdm}
+- {package: joblib, category: Utilities/training, version: '1.6', doc: joblib}
 - {package: tensorboard, category: Utilities/training, version: '2.21', doc: tensorboard~2.21}
 - {package: pytorch-lightning, category: Utilities/training, version: '2.6', doc: pytorch_lightning~2.6}
-- {package: pydantic, category: Utilities/training, version: '2.13', doc: null}
-- {package: pyyaml, category: Utilities/training, version: '6.0', doc: null}
+- {package: pydantic, category: Utilities/training, version: '2.13', doc: pydantic~2.13}
+- {package: pyyaml, category: Utilities/training, version: '6.0', doc: pyyaml}
 
-- {package: jupyterlab, category: Development, version: '4.6', doc: null}
+- {package: jupyterlab, category: Development, version: '4.6', doc: jupyterlab~4.6}
