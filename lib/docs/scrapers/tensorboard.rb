@@ -28,7 +28,8 @@ module Docs
     html_filters.push 'tensorboard/clean_html', 'tensorboard/entries'
 
     options[:only] = GUIDES.dup
-    options[:max_image_size] = 300_000
+    # the dashboard screenshots are the point of most guides
+    options[:max_image_size] = 1_500_000
     options[:rate_limit] = 30
 
     options[:attribution] = <<-HTML
