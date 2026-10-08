@@ -1,0 +1,32 @@
+@use 'global/classes';
+@use 'pages/simple';
+
+._spacy {
+  @extend %simple;
+
+  ._spacy-tag {
+    @extend %label, %label-gray;
+    margin-left: .25rem;
+    font-size: .75rem;
+    font-weight: var(--baseFontWeight, normal);
+    vertical-align: middle;
+  }
+
+  ._spacy-tags { margin-top: -.5rem; }
+  ._spacy-teaser { font-size: 1.125em; }
+
+  // the examples and tips spacy.io shows beside the text
+  ._spacy-aside { @extend %note, %note-gray; }
+  ._spacy-aside > h4:first-child { margin-top: 0; }
+  ._spacy-aside > pre:last-child { margin-bottom: 0; }
+
+  ._spacy-code-title {
+    margin-bottom: .25rem;
+    font-weight: var(--boldFontWeight);
+  }
+
+  figure {
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+}

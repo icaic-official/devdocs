@@ -25,9 +25,9 @@
 - {package: sentence-transformers, category: Core AI/ML, version: '6.0', doc: sentence_transformers~6.1}
 - {package: datasets, category: Core AI/ML, version: '5.0', doc: datasets~5.0}
 - {package: evaluate, category: Core AI/ML, version: '0.4', doc: evaluate~0.4}
-- {package: spacy, category: Core AI/ML, version: '3.8', doc: null}
-- {package: nltk, category: Core AI/ML, version: '3.10', doc: null}
-- {package: gensim, category: Core AI/ML, version: '4.4', doc: null}
+- {package: spacy, category: Core AI/ML, version: '3.8', doc: spacy}
+- {package: nltk, category: Core AI/ML, version: '3.10', doc: nltk}
+- {package: gensim, category: Core AI/ML, version: '4.4', doc: gensim}
 
 - {package: numpy, category: Data processing, version: '2.5', doc: numpy~2.5}
 - {package: pandas, category: Data processing, version: '3.0', doc: pandas~3}
