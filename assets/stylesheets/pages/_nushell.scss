@@ -1,0 +1,9 @@
+@use 'pages/simple';
+
+._nushell {
+  @extend %simple;
+
+  pre > code {
+    font-size: inherit;
+  }
+}

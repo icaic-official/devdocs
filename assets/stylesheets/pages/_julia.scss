@@ -1,0 +1,9 @@
+@use 'pages/simple';
+
+._julia {
+  @extend %simple;
+
+  .footnote { @extend %note; }
+  .note { @extend %note; }
+  .docstring-category { float: right; }
+}

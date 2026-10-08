@@ -1,0 +1,9 @@
+@use 'pages/simple';
+
+._jekyll {
+  @extend %simple;
+
+  .note.info { @extend %note-blue; }
+  .note.warning { @extend %note-red; }
+  .note.unreleased { @extend %note-orange; }
+}

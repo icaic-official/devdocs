@@ -1,0 +1,10 @@
+@use 'pages/simple';
+
+._yii {
+  @extend %simple;
+
+  .detail-header-tag, .detailHeaderTag {
+    float: right;
+    color: var(--textColorLight);
+  }
+}

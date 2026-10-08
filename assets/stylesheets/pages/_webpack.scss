@@ -1,0 +1,7 @@
+@use 'pages/simple';
+
+._webpack {
+  @extend %simple;
+
+  blockquote.tip { @extend %note-blue; }
+}

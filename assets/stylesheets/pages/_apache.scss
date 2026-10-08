@@ -1,0 +1,8 @@
+@use 'pages/simple';
+
+._apache {
+  @extend %simple;
+
+  .note, .warning { @extend %note; }
+  .warning { @extend %note-red; }
+}

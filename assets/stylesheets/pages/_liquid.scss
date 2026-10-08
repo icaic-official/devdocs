@@ -1,0 +1,7 @@
+@use 'pages/simple';
+
+._liquid {
+  @extend %simple;
+
+  p.code-label { @extend %pre-heading; }
+}

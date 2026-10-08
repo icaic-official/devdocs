@@ -1,0 +1,8 @@
+@use 'global/classes';
+
+._elisp {
+    // definitions (@deffn, @defvr, ...) — the items of a plain @table have no class
+    dl > dt[class] {
+        @extend %block-label, %label-blue;
+    }
+}

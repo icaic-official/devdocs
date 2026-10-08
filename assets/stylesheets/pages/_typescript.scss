@@ -1,0 +1,6 @@
+@use 'pages/simple';
+
+._typescript {
+  @extend %simple;
+  .deprecated { @extend %label-red; }
+}

@@ -1,0 +1,8 @@
+@use 'pages/simple';
+
+._express {
+  @extend %simple;
+
+  .doc-box { @extend %note; }
+  .doc-warn { @extend %note-red; }
+}

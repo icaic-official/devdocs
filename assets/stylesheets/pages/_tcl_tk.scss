@@ -1,0 +1,7 @@
+@use 'pages/simple';
+
+._tcl_tk {
+  @extend %simple;
+
+  dl { margin: .5em 0; }
+}

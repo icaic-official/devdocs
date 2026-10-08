@@ -1,0 +1,140 @@
+// @ts-check
+
+import { config } from "../app/config.js";
+import { newsList } from "./pages/news_tmpl.js";
+/** @import { Doc } from "../models/doc.js" */
+
+/**
+ * The notification shown in the corner. Links inside `html` are given the
+ * notification's own link class.
+ *
+ * @param {string} title
+ * @param {string} html
+ * @returns {string}
+ */
+const notif = function (title, html) {
+  html = html.replace(/<a /g, '<a class="_notif-link" ');
+  return ` <h5 class="_notif-title">${title}</h5>
+${html}
+<button type="button" class="_notif-close" title="Close"><svg><use xlink:href="#icon-close"/></svg>Close</a>\
+`;
+};
+
+/**
+ * A notification whose body is a single paragraph.
+ *
+ * @param {string} title
+ * @param {string} message
+ * @returns {string}
+ */
+const textNotif = (title, message) =>
+  notif(title, `<p class="_notif-text">${message}`);
+
+export const notifUpdateReady = () =>
+  textNotif(
+    '<span data-behavior="reboot">DevDocs has been updated.</span>',
+    '<span data-behavior="reboot"><a href="#" data-behavior="reboot">Reload the page</a> to use the new version.</span>',
+  );
+
+export const notifError = () =>
+  textNotif(
+    " Oops, an error occurred. ",
+    ` Try <a href="#" data-behavior="hard-reload">reloading</a>, and if the problem persists,
+<a href="#" data-behavior="reset">resetting the app</a>.<br>
+You can also report this issue on <a href="https://github.com/freeCodeCamp/devdocs/issues/new" target="_blank" rel="noopener">GitHub</a>. `,
+  );
+
+export const notifQuotaExceeded = () =>
+  textNotif(
+    " The offline database has exceeded its size limitation. ",
+    " Unfortunately this quota can't be detected programmatically, and the database can't be opened while over the quota, so it had to be reset. ",
+  );
+
+export const notifStorageBlocked = () =>
+  textNotif(
+    " Please enable local storage. ",
+    " DevDocs will not work properly if local storage is disabled. ",
+  );
+
+export const notifInvalidLocation = () =>
+  textNotif(
+    ` DevDocs must be loaded from ${config.production_host} `,
+    " Otherwise things are likely to break. ",
+  );
+
+export const notifImportInvalid = () =>
+  textNotif(
+    " Oops, an error occurred. ",
+    " The file you selected is invalid. ",
+  );
+
+/**
+ * @param {Array<[string, ...string[]]>} news The entries, as news_tmpl.js exports them.
+ * @returns {string}
+ */
+export const notifNews = (news) =>
+  notif(
+    "Changelog",
+    `<div class="_notif-content _notif-news">${newsList(news, {
+      years: false,
+    })}</div>`,
+  );
+
+/**
+ * @param {Doc[]} docs Enabled docs with a new release.
+ * @param {unknown[]} disabledDocs Disabled docs with a new release.
+ * @returns {string}
+ */
+export const notifUpdates = function (docs, disabledDocs) {
+  let doc;
+  let html = '<div class="_notif-content _notif-news">';
+
+  if (docs.length > 0) {
+    html += '<div class="_news-row">';
+    html += '<ul class="_notif-list">';
+    for (doc of docs) {
+      html += `<li>${doc.name}`;
+      if (doc.release) {
+        html += ` <code>&rarr;</code> ${doc.release}`;
+      }
+    }
+    html += "</ul></div>";
+  }
+
+  if (disabledDocs.length > 0) {
+    html += '<div class="_news-row"><p class="_news-title">Disabled:';
+    html += '<ul class="_notif-list">';
+    for (doc of disabledDocs) {
+      html += `<li>${doc.name}`;
+      if (doc.release) {
+        html += ` <code>&rarr;</code> ${doc.release}`;
+      }
+      html += '<span class="_notif-info"><a href="/settings">Enable</a></span>';
+    }
+    html += "</ul></div>";
+  }
+
+  return notif("Updates", `${html}</div>`);
+};
+
+export const notifShare = () =>
+  textNotif(
+    " Hi there! ",
+    ` Like DevDocs? Help us reach more developers by sharing the link with your friends on
+<a href="https://out.devdocs.io/s/tw" target="_blank" rel="noopener">Twitter</a>, <a href="https://out.devdocs.io/s/fb" target="_blank" rel="noopener">Facebook</a>,
+<a href="https://out.devdocs.io/s/re" target="_blank" rel="noopener">Reddit</a>, etc.<br>Thanks :) `,
+  );
+
+export const notifUpdateDocs = () =>
+  textNotif(
+    " Documentation updates available. ",
+    ' <a href="/offline">Install them</a> as soon as possible to avoid broken pages. ',
+  );
+
+export const notifAnalyticsConsent = () =>
+  textNotif(
+    " Tracking cookies ",
+    ` We would like to gather usage data about how DevDocs is used through Google Analytics and Gauges. We only collect anonymous traffic information.
+Please confirm if you accept our tracking cookies. You can always change your decision in the settings.
+<br><span class="_notif-right"><a href="#" data-behavior="accept-analytics">Accept</a> or <a href="#" data-behavior="decline-analytics">Decline</a></span> `,
+  );

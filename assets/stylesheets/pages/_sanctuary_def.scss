@@ -1,0 +1,9 @@
+@use 'pages/simple';
+
+._sanctuary_def {
+  @extend %simple;
+
+  pre > code {
+    font-size: inherit;
+  }
+}

@@ -1,0 +1,9 @@
+@use 'pages/simple';
+
+._mariadb {
+  @extend %simple;
+
+  .graybox, .product {
+    @extend %note;
+  }
+}

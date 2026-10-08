@@ -1,0 +1,8 @@
+@use 'pages/simple';
+
+._gnuplot {
+  .CENTER {
+    text-align: center;
+  }
+  @extend %simple;
+}

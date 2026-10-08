@@ -1,0 +1,8 @@
+@use 'global/classes';
+
+._drupal {
+  h3 { @extend %block-heading; }
+  .signature { @extend %note, %note-blue; }
+
+  span.api-deprecated { @extend %label, %label-red; }
+}
