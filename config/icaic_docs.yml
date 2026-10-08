@@ -12,8 +12,8 @@
 - {package: python, category: Language, version: '3.13', doc: python~3.13}
 
 - {package: torch, category: Core AI/ML, version: '2.14', doc: pytorch~2.14}
-- {package: torchvision, category: Core AI/ML, version: '0.29', doc: null}
-- {package: torchaudio, category: Core AI/ML, version: '2.11', doc: null}
+- {package: torchvision, category: Core AI/ML, version: '0.29', doc: torchvision~0.29}
+- {package: torchaudio, category: Core AI/ML, version: '2.11', doc: torchaudio~2.11}
 - {package: transformers, category: Core AI/ML, version: '5.17', doc: null}
 - {package: accelerate, category: Core AI/ML, version: '1.15', doc: null}
 - {package: peft, category: Core AI/ML, version: '0.21', doc: null}
@@ -41,15 +41,14 @@
 - {package: scikit-image, category: Computer vision, version: '0.26', doc: scikit_image}
 - {package: albumentations, category: Computer vision, version: '2.0', doc: null}
 
-# DevDocs' prebuilt matplotlib is 3.10.8 until a 3.11 build replaces it.
-- {package: matplotlib, category: Visualization, version: '3.11', doc: matplotlib}
+- {package: matplotlib, category: Visualization, version: '3.11', doc: matplotlib~3.11}
 - {package: seaborn, category: Visualization, version: '0.13', doc: null}
 - {package: plotly, category: Visualization, version: '7.1', doc: null}
 
 - {package: tqdm, category: Utilities/training, version: '4.70', doc: null}
 - {package: joblib, category: Utilities/training, version: '1.6', doc: null}
-- {package: tensorboard, category: Utilities/training, version: '2.21', doc: null}
-- {package: pytorch-lightning, category: Utilities/training, version: '2.6', doc: null}
+- {package: tensorboard, category: Utilities/training, version: '2.21', doc: tensorboard~2.21}
+- {package: pytorch-lightning, category: Utilities/training, version: '2.6', doc: pytorch_lightning~2.6}
 - {package: pydantic, category: Utilities/training, version: '2.13', doc: null}
 - {package: pyyaml, category: Utilities/training, version: '6.0', doc: null}
 

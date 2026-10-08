@@ -23,10 +23,18 @@ module Docs
     version do
       self.release = '3.10.8'
       self.base_urls = [
-        "https://matplotlib.org/stable/api/",
-        "https://matplotlib.org/stable/mpl_toolkits/mplot3d/",
-        "https://matplotlib.org/stable/mpl_toolkits/axes_grid/api/"
+        "https://matplotlib.org/#{release}/api/",
+        "https://matplotlib.org/#{release}/mpl_toolkits/mplot3d/",
+        "https://matplotlib.org/#{release}/mpl_toolkits/axes_grid/api/"
       ]
+    end
+
+    # The mpl_toolkits pages now live under api/toolkits/, inside the api/ base URL.
+    version '3.11' do
+      self.release = '3.11.2'
+      self.base_urls = ["https://matplotlib.org/#{release}/api/"]
+
+      html_filters.insert_before 'sphinx/clean_html', 'sphinx/math'
     end
 
     version '3.9' do
