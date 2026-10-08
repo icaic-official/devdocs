@@ -34,6 +34,9 @@ module Docs
       self.release = '3.11.2'
       self.base_urls = ["https://matplotlib.org/#{release}/api/"]
 
+      # unthrottled, matplotlib.org cuts some of the larger pages short
+      options[:rate_limit] = 300
+
       html_filters.insert_before 'sphinx/clean_html', 'sphinx/math'
     end
 
