@@ -17,7 +17,11 @@ module Docs
     # the guides, the API reference and the training examples' READMEs
     options[:only_patterns] = [/\Adocs\//, /\Aexamples\//]
     options[:skip] = %w(genindex.html search.html py-modindex.html docs/publications.html)
-    options[:skip_patterns] = [/\A_modules/, /\A_sources/, /\A_static/, /\.(py|ipynb|txt|json|csv)\z/]
+    options[:skip_patterns] = [
+      /\A_modules/, /\A_sources/, /\A_static/, /\.(py|ipynb|txt|json|csv)\z/,
+      # old URLs that redirect to the API pages, which would otherwise be stored twice
+      %r{\Adocs/package_reference/(sentence_transformer/SentenceTransformer|sparse_encoder/SparseEncoder|cross_encoder/cross_encoder|quantization)\.html\z}i
+    ]
     options[:max_image_size] = 300_000
     options[:rate_limit] = 300
 
