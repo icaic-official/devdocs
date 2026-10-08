@@ -45,7 +45,7 @@ module Docs
         return [] unless slug.start_with?('generated/')
         page_id = slug.sub('generated/', '')
         css('dl.py > dt[id]').each_with_object([]) do |node, entries|
-          next if node['id'] == page_id
+          next if node['id'] == page_id || node['id'].end_with?('.__init__')
           kind = node.parent['class'][/\bpy (\w+)/, 1]
           name = node['id'].dup
           name << '()' if %w(function method classmethod staticmethod).include?(kind)

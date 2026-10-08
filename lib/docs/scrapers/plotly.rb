@@ -54,8 +54,10 @@ module Docs
     options[:only] = GUIDE_PATHS
     options[:only_patterns] = [/\Apython-api-reference\/(index|plotly\.[\w.]+|generated\/plotly\.[\w.]+)\.html\z/]
     options[:fix_urls] = ->(url) do
-      # the guides link to themselves without the trailing slash
+      # the guides link to themselves without the trailing slash, and to the
+      # reference without the extension
       url.sub(%r{\Ahttps://plotly\.com/python/([\w-]+)(?=\z|#)}, 'https://plotly.com/python/\1/')
+         .sub(%r{\A(https://plotly\.com/python-api-reference/generated/plotly[\w.]*?)(?<!\.html)(?=\z|#)}, '\1.html')
     end
     options[:case_sensitive_paths] = true
     options[:max_image_size] = 300_000

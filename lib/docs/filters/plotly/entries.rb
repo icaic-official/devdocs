@@ -69,8 +69,7 @@ module Docs
       end
 
       def function_page?
-        dl = at_css('dl.py')
-        slug.include?('/generated/') && dl && dl['class'] =~ /\bpy function\b/
+        slug.include?('/generated/') && css('dl.py.function > dt[id]').any? { |node| node['id'] == page_id }
       end
     end
   end

@@ -30,7 +30,14 @@ module Docs
             link = node.ancestors('a').first
             link.replace(node) if link
           else
-            (node.ancestors('a').first || node).remove
+            link = node.ancestors('a').first
+            block = node.ancestors('p, li').first
+            # badges standing for a word in a sentence ("GitHub's Releases: [badge]") become their text
+            if node['alt'].present? && block && block.content.strip.present?
+              node.replace(CGI.escapeHTML(node['alt']))
+            else
+              (link || node).remove
+            end
           end
         end
         css('p, div[align]').each { |node| node.remove if node.content.strip.empty? && !node.at_css('img') }
@@ -58,6 +65,9 @@ module Docs
         at_css('h2')&.tap { |node| node.name = 'h1' }
         css('markdown-accessiblity-table').each { |node| node.before(node.children).remove }
         css('#table-of-contents').remove
+        css('h1, h2, h3, h4, h5, h6').css('> a[href="#table-of-contents"]').each do |node|
+          node.before(node.children).remove
+        end
         # the sponsor logos
         css('p:has(> strong)').each do |node|
           next unless node.content.strip == 'Featured Sponsors'
