@@ -37,7 +37,19 @@ module Docs
       href
     end
 
+    # Paths are stored in lowercase. With the case_sensitive_paths option,
+    # those that had capitals get a trailing "_", so that pages such as
+    # pyarrow.Table and pyarrow.table (on case-sensitive servers) aren't
+    # stored at the same path.
     def normalize_path(path)
+      normalized = normalize_lowercase_path(path)
+      if context[:case_sensitive_paths] && path != path.downcase && normalized != 'index' && !normalized.end_with?('/index')
+        normalized = "#{normalized}_"
+      end
+      normalized
+    end
+
+    def normalize_lowercase_path(path)
       path = path.downcase
 
       if context[:decode_and_clean_paths]

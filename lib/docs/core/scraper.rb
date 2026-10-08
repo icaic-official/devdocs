@@ -70,14 +70,14 @@ module Docs
     end
 
     def build_pages
-      history = Set.new initial_urls.map(&:downcase)
+      history = Set.new initial_urls.map { |url| history_key(url) }
       instrument 'running.scraper', urls: initial_urls
 
       request_all initial_urls do |response|
         next unless data = handle_response(response)
         yield data
         next unless data[:internal_urls].present?
-        next_urls = data[:internal_urls].select { |url| history.add?(url.downcase) }
+        next_urls = data[:internal_urls].select { |url| history.add?(history_key(url)) }
         instrument 'queued.scraper', urls: next_urls
         next_urls
       end
@@ -85,6 +85,12 @@ module Docs
 
     def base_url
       @base_url ||= URL.parse self.class.base_url
+    end
+
+    # URLs that differ only by case are the same page, unless the paths are
+    # case-sensitive (see NormalizePathsFilter).
+    def history_key(url)
+      options[:case_sensitive_paths] ? url.to_s : url.to_s.downcase
     end
 
     def root_url

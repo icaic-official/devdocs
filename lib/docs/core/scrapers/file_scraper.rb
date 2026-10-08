@@ -35,7 +35,7 @@ module Docs
     private
 
     def build_pages_in_parallel(jobs)
-      history = Set.new initial_urls.map(&:downcase)
+      history = Set.new initial_urls.map { |url| history_key(url) }
       queue = initial_urls.dup # urls waiting for a worker
       order = initial_urls.dup # urls in the order their pages are yielded
       results = {}
@@ -71,7 +71,7 @@ module Docs
           next unless data = results.delete(url)
           yield data
           next unless data[:internal_urls].present?
-          next_urls = data[:internal_urls].select { |next_url| history.add?(next_url.downcase) }
+          next_urls = data[:internal_urls].select { |next_url| history.add?(history_key(next_url)) }
           next if next_urls.empty?
           instrument 'queued.scraper', urls: next_urls
           queue.concat(next_urls)

@@ -31,13 +31,13 @@
 
 - {package: numpy, category: Data processing, version: '2.5', doc: numpy~2.5}
 - {package: pandas, category: Data processing, version: '3.0', doc: pandas~3}
-- {package: scipy, category: Data processing, version: '1.18', doc: null}
+- {package: scipy, category: Data processing, version: '1.18', doc: scipy~1.18}
 - {package: polars, category: Data processing, version: '1.44', doc: polars}
-- {package: pyarrow, category: Data processing, version: '25.0', doc: null}
-- {package: h5py, category: Data processing, version: '3.16', doc: null}
+- {package: pyarrow, category: Data processing, version: '25.0', doc: pyarrow~25.0}
+- {package: h5py, category: Data processing, version: '3.16', doc: h5py~3.16}
 
 - {package: opencv-python-headless, category: Computer vision, version: '5.0', doc: null}
-- {package: Pillow, category: Computer vision, version: '12.3', doc: null}
+- {package: Pillow, category: Computer vision, version: '12.3', doc: pillow~12.3}
 - {package: scikit-image, category: Computer vision, version: '0.26', doc: scikit_image}
 - {package: albumentations, category: Computer vision, version: '2.0', doc: null}
 
