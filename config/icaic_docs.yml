@@ -36,7 +36,7 @@
 - {package: pyarrow, category: Data processing, version: '25.0', doc: pyarrow~25.0}
 - {package: h5py, category: Data processing, version: '3.16', doc: h5py~3.16}
 
-- {package: opencv-python-headless, category: Computer vision, version: '5.0', doc: null}
+- {package: opencv-python-headless, category: Computer vision, version: '5.0', doc: opencv~5.0}
 - {package: Pillow, category: Computer vision, version: '12.3', doc: pillow~12.3}
 - {package: scikit-image, category: Computer vision, version: '0.26', doc: scikit_image}
 - {package: albumentations, category: Computer vision, version: '2.0', doc: null}

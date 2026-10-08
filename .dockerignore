@@ -9,3 +9,5 @@ public/docs
 public/assets
 tmp
 log
+# the original documentation files file scrapers read (lib/docs/scrapers)
+docs/*/
