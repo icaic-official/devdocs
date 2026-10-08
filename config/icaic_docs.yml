@@ -39,7 +39,7 @@
 - {package: opencv-python-headless, category: Computer vision, version: '5.0', doc: opencv~5.0}
 - {package: Pillow, category: Computer vision, version: '12.3', doc: pillow~12.3}
 - {package: scikit-image, category: Computer vision, version: '0.26', doc: scikit_image}
-- {package: albumentations, category: Computer vision, version: '2.0', doc: null}
+- {package: albumentations, category: Computer vision, version: '2.0', doc: albumentations~2.0}
 
 - {package: matplotlib, category: Visualization, version: '3.11', doc: matplotlib~3.11}
 - {package: seaborn, category: Visualization, version: '0.13', doc: seaborn}
