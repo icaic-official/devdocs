@@ -19,16 +19,16 @@ module Docs
       end
 
       def additional_entries
-        return [] if root_page?
-
         css('dl.py > dt[id]').each_with_object([]) do |node, entries|
           id = node['id']
           next if id == page_object
+          # the index page has no type of its own: use the package's name
+          type = id.split('.').first if root_page?
           case node.parent['class']
           when /\bpy (function|method|classmethod|staticmethod)\b/
-            entries << ["#{id}()", id]
+            entries << ["#{id}()", id, type]
           when /\bpy (class|exception|attribute|property|data)\b/
-            entries << [id, id]
+            entries << [id, id, type]
           end
         end
       end

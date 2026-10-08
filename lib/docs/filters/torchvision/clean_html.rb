@@ -40,6 +40,11 @@ module Docs
           node.before(node.children).remove
         end
 
+        # "Try on Colab or go to the end to download the full example code"
+        css('.admonition.note').each do |node|
+          node.remove if node.content.include?('to download the full example code')
+        end
+
         # download buttons, timing notes and rating widgets
         css('.sphx-glr-footer', '.sphx-glr-download', '.sphx-glr-download-link-note', '.sphx-glr-signature',
             '.sphx-glr-timing', '.pytorch-call-to-action-links', '.rating-container').remove
