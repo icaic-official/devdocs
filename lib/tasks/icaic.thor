@@ -35,10 +35,11 @@ class IcaicCLI < Thor
     puts "Installed #{Icaic.doc_slugs.length} docs: #{Icaic.doc_slugs.join(', ')}"
   end
 
-  desc 'build <doc> <doc@version>...', 'Scrape docs and store their packages in docs-packages'
+  desc 'build <doc> <doc@version>... [--jobs N]', 'Scrape docs and store their packages in docs-packages'
+  option :jobs, type: :numeric, default: 1, aliases: '-j', desc: 'Number of processes used to parse the pages (file scrapers only)'
   def build(*names)
     names.each do |name|
-      system('thor', 'docs:generate', name, '--package', '--force') or abort "ERROR: failed to generate #{name}"
+      system('thor', 'docs:generate', name, '--package', '--force', '--jobs', options[:jobs].to_s) or abort "ERROR: failed to generate #{name}"
       doc = Docs.find(*name.split(/@|~/))
       FileUtils.mkpath(Icaic::PACKAGES_PATH)
       FileUtils.mv(File.join(Docs.store_path, "#{doc.path}.tar.gz"), Icaic.package_path(doc.path))

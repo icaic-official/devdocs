@@ -64,7 +64,8 @@ The preview builds the image and runs it on port 9292:
 ## Adding or updating a doc
 
 1. Write or update the scraper in `lib/docs/scrapers` (and its filters in `lib/docs/filters`).
-2. Build it into `docs-packages/`: `thor icaic:build <name>` (or `<name>@<version>`).
+2. Build it into `docs-packages/`: `thor icaic:build <name>` (or `<name>@<version>`); `--jobs 3`
+   parses the pages of docs scraped from files (e.g. the Hugging Face ones) in parallel.
 3. Set the entry's `doc` in `config/icaic_docs.yml` to the doc's slug.
 4. Commit the scraper, the package and the config, then rebuild the image.
 

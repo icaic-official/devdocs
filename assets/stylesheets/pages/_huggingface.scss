@@ -1,0 +1,50 @@
+@use 'global/classes';
+
+._huggingface {
+  h2 { @extend %block-heading; }
+  h4 { font-size: 1em; }
+
+  dl.hf-docstring { margin: 1.5em 0; }
+  dl.hf-docstring > dt {
+    @extend %block-label;
+    overflow-wrap: anywhere;
+    code { background: none; border: 0; padding: 0; margin: 0; white-space: normal; }
+  }
+  dl.hf-class > dt, dl.hf-function > dt { @extend %label-blue; }
+  dl.hf-docstring > dd { margin-left: 1.5em; }
+  dl.hf-docstring dl.hf-docstring { margin-left: 0; }
+
+  .hf-prefix { font-style: italic; }
+  .hf-source { float: right; margin-left: .5em; font-size: .875em; }
+
+  .hf-label { margin: 1em 0 .5em; }
+  .hf-label + ul { margin-top: 0; }
+  .hf-returns > p:first-child { margin-top: 1em; }
+
+  .hf-badge {
+    @extend %label;
+    display: inline-block;
+    margin: 0 .25em .25em 0;
+    font-size: .8125em;
+  }
+
+  .hf-tabs { margin: 1em 0; }
+  .hf-tab {
+    @extend %label, %label-gray;
+    display: inline-block;
+    margin: 1em 0 0;
+    font-weight: var(--boldFontWeight);
+  }
+  .hf-tab + pre { margin-top: .25em; }
+
+  .note { @extend %note; }
+  .note-warning { @extend %note-orange; }
+
+  .hf-table { overflow-x: auto; }
+
+  p > code, li > code, td > code, dd > code { @extend %label; }
+
+  math[display="block"] { display: block; overflow-x: auto; margin: 1em 0; }
+
+  img { max-width: 100%; height: auto; }
+}
