@@ -48,10 +48,18 @@ module Docs
           node.replace(%(<br><code>#{CGI.escapeHTML(node.content.delete_prefix('Python:').strip)}</code>))
         end
 
-        css('div.image', 'div.caption', '.textblock', '.contents', 'div:not([class]):not([id])').each do |node|
+        # Doxygen captions the images without one "image"
+        css('div.caption').each do |node|
+          caption = node.content.strip
+          if ['', 'image', 'alternate text'].include?(caption.downcase)
+            node.remove
+          else
+            node.replace(%(<p><em>#{node.inner_html.strip}</em></p>))
+          end
+        end
+        css('div.image', '.textblock', '.contents', 'div:not([class]):not([id])').each do |node|
           node.before(node.children).remove
         end
-        css('div.caption').remove
 
         css('a').each { |node| node.remove if node.content.strip == 'More...' }
         css('h2.groupheader', 'a.el', 'tr[class]').each { |node| node.remove_attribute('class') }
