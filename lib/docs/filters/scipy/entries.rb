@@ -6,10 +6,15 @@ module Docs
           name = api_name.dup
           name << '()' if callable?
           name
+        elsif module_page? && special_page?
+          name = heading
+          # "minimize(method='BFGS')" in optimize.minimize-bfgs
+          name = "#{module_of(slug.split('/').last)}.#{name.tr('’', "'")}" if slug.include?('-')
+          name
         elsif module_page?
           "scipy.#{slug.split('/').last}"
         else
-          at_css('h1').content.strip.delete_suffix('#').strip
+          heading
         end
       end
 
@@ -18,7 +23,7 @@ module Docs
           module_of(api_name.delete_prefix('scipy.'))
         elsif module_page?
           name = slug.split('/').last
-          if name.include?('-') || name.end_with?('_api', 'migration_to_sparray') || name.start_with?('stats._')
+          if special_page?
             module_of(name)
           else
             "scipy.#{name}"
@@ -39,6 +44,17 @@ module Docs
       end
 
       private
+
+      def heading
+        at_css('h1').content.strip.delete_suffix('#').strip
+      end
+
+      # the pages of the solvers' options and the reference's other pages that
+      # aren't a module's
+      def special_page?
+        name = slug.split('/').last
+        name.include?('-') || name.end_with?('_api', 'migration_to_sparray') || name.start_with?('stats._')
+      end
 
       # the object the page documents ("czt-function" documents scipy.signal.czt)
       def api_name

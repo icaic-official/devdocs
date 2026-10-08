@@ -19,9 +19,9 @@ module Docs
           header = node.at_css('.sd-card-header')&.content&.strip
           body = node.at_css('.sd-card-body')
           link = node.at_css('.sd-card-footer a')
-          html = +''
-          html << (link ? %(<h2><a href="#{link['href']}">#{header}</a></h2>) : "<h2>#{header}</h2>")
+          html = +"<h2>#{header}</h2>"
           html << body.css('p').map { |p| "<p>#{p.inner_html}</p>" }.join if body
+          html << %(<p><a href="#{link['href']}">#{link.content.strip}</a></p>) if link
           node.replace(html)
         end
         css('.sd-col', '.sd-row', '.sd-container-fluid').each { |node| node.before(node.children).remove }
