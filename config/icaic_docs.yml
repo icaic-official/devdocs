@@ -19,9 +19,9 @@
 - {package: peft, category: Core AI/ML, version: '0.21', doc: peft~0.21}
 - {package: trl, category: Core AI/ML, version: '1.13', doc: trl~1.13}
 - {package: scikit-learn, category: Core AI/ML, version: '1.9', doc: scikit_learn}
-- {package: xgboost, category: Core AI/ML, version: '3.4', doc: null}
-- {package: lightgbm, category: Core AI/ML, version: '4.7', doc: null}
-- {package: catboost, category: Core AI/ML, version: '1.2', doc: null}
+- {package: xgboost, category: Core AI/ML, version: '3.4', doc: xgboost~3.4}
+- {package: lightgbm, category: Core AI/ML, version: '4.7', doc: lightgbm~4.7}
+- {package: catboost, category: Core AI/ML, version: '1.2', doc: catboost}
 - {package: sentence-transformers, category: Core AI/ML, version: '6.0', doc: sentence_transformers~6.1}
 - {package: datasets, category: Core AI/ML, version: '5.0', doc: datasets~5.0}
 - {package: evaluate, category: Core AI/ML, version: '0.4', doc: evaluate~0.4}
