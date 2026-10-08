@@ -577,6 +577,7 @@ export class App extends Events {
   isInvalidLocation() {
     return (
       config.env === "production" &&
+      !config.self_hosted &&
       !location.host.startsWith(config.production_host)
     );
   }

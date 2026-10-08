@@ -1,3 +1,8 @@
+> **ICAIC 2026 edition.** This copy of DevDocs only contains the documentation of the
+> components listed in the [ICAIC 2026 technical appendix](https://icaic-official.github.io/docs/technical-appendix.html).
+> See [DEPLOY.md](DEPLOY.md) for how it's built and deployed, and
+> [config/icaic_docs.yml](config/icaic_docs.yml) for the list of docs.
+
 # [DevDocs](https://devdocs.io) — API Documentation Browser
 
 DevDocs combines multiple developer documentations in a clean and organized web UI with instant search, offline support, mobile version, dark theme, keyboard shortcuts, and more.

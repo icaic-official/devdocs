@@ -5,3 +5,7 @@ Dockerfile*
 .dockerignore
 .travis.yml
 *.md
+public/docs
+public/assets
+tmp
+log

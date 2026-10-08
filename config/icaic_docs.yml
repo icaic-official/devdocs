@@ -1,0 +1,56 @@
+# Documentation bundled for ICAIC 2026, limited to the components listed in the
+# technical appendix: https://icaic-official.github.io/docs/technical-appendix.html
+#
+# Every entry is one appendix item. `doc` is the DevDocs doc (slug, with
+# "~version" when the scraper has several versions) that documents it; entries
+# without one aren't installed yet. `thor icaic:install` installs exactly the
+# listed docs: from docs-packages/<doc>.tar.gz when that file exists (docs built
+# by this repository's scrapers), otherwise from downloads.devdocs.io.
+#
+# Nothing outside this file is installed or shown in the app.
+
+- {package: python, category: Language, version: '3.13', doc: python~3.13}
+
+- {package: torch, category: Core AI/ML, version: '2.14', doc: pytorch~2.14}
+- {package: torchvision, category: Core AI/ML, version: '0.29', doc: null}
+- {package: torchaudio, category: Core AI/ML, version: '2.11', doc: null}
+- {package: transformers, category: Core AI/ML, version: '5.17', doc: null}
+- {package: accelerate, category: Core AI/ML, version: '1.15', doc: null}
+- {package: peft, category: Core AI/ML, version: '0.21', doc: null}
+- {package: trl, category: Core AI/ML, version: '1.13', doc: null}
+- {package: scikit-learn, category: Core AI/ML, version: '1.9', doc: scikit_learn}
+- {package: xgboost, category: Core AI/ML, version: '3.4', doc: null}
+- {package: lightgbm, category: Core AI/ML, version: '4.7', doc: null}
+- {package: catboost, category: Core AI/ML, version: '1.2', doc: null}
+- {package: sentence-transformers, category: Core AI/ML, version: '6.0', doc: null}
+- {package: datasets, category: Core AI/ML, version: '5.0', doc: null}
+- {package: evaluate, category: Core AI/ML, version: '0.4', doc: null}
+- {package: spacy, category: Core AI/ML, version: '3.8', doc: null}
+- {package: nltk, category: Core AI/ML, version: '3.10', doc: null}
+- {package: gensim, category: Core AI/ML, version: '4.4', doc: null}
+
+- {package: numpy, category: Data processing, version: '2.5', doc: numpy~2.5}
+- {package: pandas, category: Data processing, version: '3.0', doc: pandas~3}
+- {package: scipy, category: Data processing, version: '1.18', doc: null}
+- {package: polars, category: Data processing, version: '1.44', doc: polars}
+- {package: pyarrow, category: Data processing, version: '25.0', doc: null}
+- {package: h5py, category: Data processing, version: '3.16', doc: null}
+
+- {package: opencv-python-headless, category: Computer vision, version: '5.0', doc: null}
+- {package: Pillow, category: Computer vision, version: '12.3', doc: null}
+- {package: scikit-image, category: Computer vision, version: '0.26', doc: scikit_image}
+- {package: albumentations, category: Computer vision, version: '2.0', doc: null}
+
+# DevDocs' prebuilt matplotlib is 3.10.8 until a 3.11 build replaces it.
+- {package: matplotlib, category: Visualization, version: '3.11', doc: matplotlib}
+- {package: seaborn, category: Visualization, version: '0.13', doc: null}
+- {package: plotly, category: Visualization, version: '7.1', doc: null}
+
+- {package: tqdm, category: Utilities/training, version: '4.70', doc: null}
+- {package: joblib, category: Utilities/training, version: '1.6', doc: null}
+- {package: tensorboard, category: Utilities/training, version: '2.21', doc: null}
+- {package: pytorch-lightning, category: Utilities/training, version: '2.6', doc: null}
+- {package: pydantic, category: Utilities/training, version: '2.13', doc: null}
+- {package: pyyaml, category: Utilities/training, version: '6.0', doc: null}
+
+- {package: jupyterlab, category: Development, version: '4.6', doc: null}

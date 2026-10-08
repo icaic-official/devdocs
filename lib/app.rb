@@ -34,9 +34,13 @@ class App < Sinatra::Application
   Rack::Mime::MIME_TYPES['.webapp'] = 'application/x-web-app-manifest+json'
 
   configure do
-    use HttpsRedirect if production? || test?
+    # Self-hosted deployments behind plain HTTP (e.g. an offline contest
+    # network) set FORCE_SSL=false.
+    use HttpsRedirect if (production? && ENV['FORCE_SSL'] != 'false') || test?
 
     set :sentry_dsn, ENV['SENTRY_DSN']
+    # Served from a domain other than devdocs.io: no analytics, no warning.
+    set :self_hosted, ENV['SELF_HOSTED'] == 'true'
     set :protection, except: [:frame_options, :xss_header]
 
     set :root, Pathname.new(File.expand_path('../..', __FILE__))
@@ -63,7 +67,8 @@ class App < Sinatra::Application
     set :docs_origin, File.join('', docs_prefix)
     set :docs_path, File.join(public_folder, docs_prefix)
     set :docs_manifest_path, File.join(docs_path, 'docs.json')
-    set :default_docs, %w(css dom html http javascript)
+    require 'icaic'
+    set :default_docs, Icaic.doc_slugs
     set :news_path, File.join(root, assets_prefix, 'javascripts', 'news.json')
 
     set :csp, false
@@ -106,7 +111,7 @@ class App < Sinatra::Application
 
   configure :production do
     set :static, false
-    set :docs_origin, '//documents.devdocs.io'
+    set :docs_origin, ENV['DOCS_ORIGIN'] || '//documents.devdocs.io'
     set :csp, "default-src 'self' *; script-src 'self' 'nonce-devdocs' https://www.google-analytics.com https://secure.gaug.es https://*.jquery.com; font-src 'none'; style-src 'self' 'unsafe-inline' *; img-src 'self' * data:;"
 
     use Rack::ConditionalGet

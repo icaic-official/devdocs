@@ -522,7 +522,7 @@ page.track = function (fn) {
 };
 
 var track = function () {
-  if (config.env !== "production") {
+  if (config.env !== "production" || config.self_hosted) {
     return;
   }
   if (navigator.doNotTrack === "1") {

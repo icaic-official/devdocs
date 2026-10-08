@@ -16,6 +16,8 @@ export interface AppConfig {
   index_filename: string;
   max_results: number;
   production_host: string;
+  /** Served from a domain other than production_host on purpose. */
+  self_hosted: boolean;
   /** The query parameter a search is read from. */
   search_param: string;
   sentry_dsn: string;

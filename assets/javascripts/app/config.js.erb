@@ -11,6 +11,7 @@ export const config = {
   index_filename: 'index.json',
   max_results: 50,
   production_host: 'devdocs.io',
+  self_hosted: <%= App.self_hosted %>,
   search_param: 'q',
   sentry_dsn: '<%= App.sentry_dsn %>',
   version: <%= Time.now.to_i %>,

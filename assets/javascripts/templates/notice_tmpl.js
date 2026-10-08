@@ -12,9 +12,11 @@ import { config } from "../app/config.js";
 const notice = (text) => `<p class="_notice-text">${text}</p>`;
 
 /** @param {Doc} doc @returns {string} */
-export const singleDocNotice = (doc) =>
-  notice(` You're browsing the ${doc.fullName} documentation. To browse all docs, go to
-<a href="//${config.production_host}" target="_top">${config.production_host}</a> (or press <code>esc</code>). `);
+export const singleDocNotice = (doc) => {
+  const host = config.self_hosted ? location.host : config.production_host;
+  return notice(` You're browsing the ${doc.fullName} documentation. To browse all docs, go to
+<a href="//${host}" target="_top">${host}</a> (or press <code>esc</code>). `);
+};
 
 export const disabledDocNotice = () =>
   notice(` <strong>This documentation is disabled.</strong>
