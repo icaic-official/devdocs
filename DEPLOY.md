@@ -71,10 +71,15 @@ RACK_ENV=production DOCS_ORIGIN=/docs FORCE_SSL=false SELF_HOSTED=true \
 
 ## Lapiz branch preview
 
-The preview builds the image and runs it on port 9292:
+Build the image in a terminal first (`docker build -t icaic-devdocs .`). The initial
+build can exceed Lapiz's ten-minute preview setup limit while downloading and
+converting documentation images. Then configure the preview on port 9292:
 
-- setup: `docker rm -f icaic-devdocs-preview || true`, then `docker build -t icaic-devdocs .`
+- setup: `docker rm -f icaic-devdocs-preview || true`
 - start: `exec docker run --rm --init --name icaic-devdocs-preview -p 9292:9292 icaic-devdocs`
+
+The application serves documentation without authentication. Any login requirement
+added by a hosting proxy must be configured separately from the app.
 
 ## Adding or updating a doc
 
