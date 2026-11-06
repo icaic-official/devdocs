@@ -15,11 +15,14 @@ appendix item. Docs come from one of two places:
 `thor icaic:install` then embeds every image that is still remote (those of the
 devdocs.io packages and a few large ones in the Hugging Face docs) into the docs, so they
 are complete without internet access. It prints a warning for any image it can't fetch;
-four images are broken at their source (one in TRL, three in Transformers).
+seven images are broken at their source (one in TRL, three in Transformers, three plots
+in pandas).
 
-Three docs are of a slightly different release than the appendix lists, because the
-projects' sites don't publish the docs of that release: NLTK 3.9.2 (appendix: 3.10),
-gensim 4.3.3 (4.4) and Sentence Transformers 6.1.0 (6.0, same API).
+Two docs are of a slightly different release than the appendix lists, because the
+projects' sites don't publish the docs of that release: gensim 4.3.3 (appendix: 4.4,
+which only adds NumPy 2 support) and Sentence Transformers 6.1.0 (6.0, same API). NLTK
+3.10's docs aren't published either, so they're built from its sources (see
+[docs/file-scrapers.md](docs/file-scrapers.md#nltk)).
 
 ## Docker (recommended)
 

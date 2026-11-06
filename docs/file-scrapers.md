@@ -65,6 +65,26 @@ wget --recursive --no-parent https://man7.org/linux/man-pages/
 mv man7.org/linux/man-pages/ docs/man/
 ```
 
+## NLTK
+
+www.nltk.org only serves the documentation of NLTK 3.9.2. Build that of the
+release in `lib/docs/scrapers/nltk.rb` from its sources, in a Python container
+(it has Tkinter, which `nltk.draw` needs):
+
+```sh
+DEVDOCS_ROOT=/path/to/devdocs
+RELEASE=3.10.4
+docker run --rm -v $DEVDOCS_ROOT/docs/nltk:/out python:3.13 bash -ec "
+  git clone -q --depth 1 --branch v$RELEASE https://github.com/nltk/nltk.git /src
+  pip -q install 'sphinx<7' 'sphinxcontrib-apidoc<0.5' nltk_theme jinja2 /src \
+    numpy scipy scikit-learn matplotlib pyparsing twython requests python-crfsuite
+  python -m nltk.downloader -q perluniprops
+  cd /src/web && sphinx-build -q -b html -j 4 . /out"
+```
+
+`nltk_theme` doesn't work with Sphinx 7. Only `nltk.book` fails to import (it
+needs the book's corpora), as on www.nltk.org.
+
 ## OpenJDK
 Search 'Openjdk' in https://www.debian.org/distrib/packages, find the `openjdk-$VERSION-doc` package,
 download it, extract it with `dpkg -x $PACKAGE ./` and move `./usr/share/doc/openjdk-$VERSION-jre-headless/api/`
