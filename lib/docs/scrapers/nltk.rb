@@ -14,6 +14,7 @@ module Docs
       code: 'https://github.com/nltk/nltk'
     }
 
+    html_filters.insert_before 'clean_local_urls', 'local_images'
     html_filters.push 'nltk/clean_html', 'nltk/entries', 'sphinx/math', 'sphinx/clean_html'
 
     options[:container] = '#main-content'

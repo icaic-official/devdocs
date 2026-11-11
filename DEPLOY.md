@@ -18,11 +18,10 @@ are complete without internet access. It prints a warning for any image it can't
 seven images are broken at their source (one in TRL, three in Transformers, three plots
 in pandas).
 
-Two docs are of a slightly different release than the appendix lists, because the
-projects' sites don't publish the docs of that release: gensim 4.3.3 (appendix: 4.4,
-which only adds NumPy 2 support) and Sentence Transformers 6.1.0 (6.0, same API). NLTK
-3.10's docs aren't published either, so they're built from its sources (see
-[docs/file-scrapers.md](docs/file-scrapers.md#nltk)).
+The projects' sites don't publish the docs of the NLTK 3.10, gensim 4.4 and Sentence
+Transformers 6.0 releases the appendix lists, so those are built from the projects'
+sources (see [docs/file-scrapers.md](docs/file-scrapers.md)). Every doc is of the
+release the appendix lists.
 
 ## Docker (recommended)
 

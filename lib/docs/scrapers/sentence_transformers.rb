@@ -1,7 +1,8 @@
 module Docs
-  # sbert.net only serves the documentation of the latest release, 6.1.0, a
-  # documentation refresh over 6.0.1 that leaves the API unchanged.
-  class SentenceTransformers < UrlScraper
+  # sbert.net only serves the documentation of the latest release, so the
+  # documentation of the 6.0 release is built from its sources (see
+  # docs/file-scrapers.md).
+  class SentenceTransformers < FileScraper
     self.name = 'Sentence Transformers'
     self.slug = 'sentence_transformers'
     self.type = 'sphinx'
@@ -11,6 +12,7 @@ module Docs
       code: 'https://github.com/huggingface/sentence-transformers'
     }
 
+    html_filters.insert_before 'clean_local_urls', 'local_images'
     html_filters.push 'sentence_transformers/entries', 'sentence_transformers/clean_html', 'sphinx/math', 'sphinx/clean_html'
 
     options[:container] = '.rst-content [itemprop="articleBody"]'
@@ -18,26 +20,31 @@ module Docs
     options[:only_patterns] = [/\Adocs\//, /\Aexamples\//]
     options[:skip] = %w(genindex.html search.html py-modindex.html docs/publications.html)
     options[:skip_patterns] = [
-      /\A_modules/, /\A_sources/, /\A_static/, /\.(py|ipynb|txt|json|csv)\z/,
-      # old URLs that redirect to the API pages, which would otherwise be stored twice
-      %r{\Adocs/package_reference/(sentence_transformer/SentenceTransformer|sparse_encoder/SparseEncoder|cross_encoder/cross_encoder|quantization)\.html\z}i
+      /\A_modules/, /\A_sources/, /\A_static/, /\.(py|ipynb|txt|json|csv)\z/
     ]
-    # util.html redirects to util/index.html, whose links are relative to util/;
-    # stored as "util" they would point a level too high
+    # Old URLs that sbert.net redirects to the pages that replaced them; the
+    # build has no page at those URLs, but the docs still link to them
+    REDIRECTS = {
+      'util' => 'util/index',
+      'quantization' => 'util/quantization',
+      'sentence_transformer/SentenceTransformer' => 'sentence_transformer/model',
+      'sparse_encoder/SparseEncoder' => 'sparse_encoder/model',
+      'cross_encoder/cross_encoder' => 'cross_encoder/model'
+    }
     options[:fix_urls] = ->(url) do
-      url.sub(%r{/docs/package_reference/util\.html(?=\z|#)}, '/docs/package_reference/util/index.html')
+      url.sub(%r{/docs/package_reference/(#{REDIRECTS.keys.join('|')})\.html(?=\z|#)}) do
+        "/docs/package_reference/#{REDIRECTS[$1]}.html"
+      end
     end
     options[:max_image_size] = 300_000
-    options[:rate_limit] = 300
 
     options[:attribution] = <<-HTML
       &copy; 2019&ndash;2026 Nils Reimers, Tom Aarsen and the Sentence Transformers contributors<br>
       Licensed under the Apache License, Version 2.0.
     HTML
 
-    version '6.1' do
-      self.release = '6.1.0'
-      self.base_url = 'https://sbert.net/'
+    version '6.0' do
+      self.release = '6.0.1'
     end
 
     def get_latest_version(opts)

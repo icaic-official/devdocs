@@ -14,7 +14,7 @@ module Docs
       code: 'https://github.com/opencv/opencv'
     }
 
-    html_filters.insert_before 'clean_local_urls', 'opencv/images'
+    html_filters.insert_before 'clean_local_urls', 'local_images'
     html_filters.push 'opencv/clean_html', 'opencv/math', 'opencv/entries'
 
     options[:container] = '#doc-content'
@@ -111,8 +111,7 @@ module Docs
       paths = Set.new(pages.keys)
       super.merge \
         only_patterns: [PageSet.new(paths)],
-        opencv_pages: pages,
-        source_directory: source_directory
+        opencv_pages: pages
     end
 
     # Matches the subpaths of the pages included: an `only` list of thousands

@@ -19,6 +19,29 @@ node scripts/build/docs.js
 ls tmp/docs.json
 ```
 
+## gensim
+
+radimrehurek.com/gensim only serves the documentation of gensim 4.3.3. Build that
+of the release in `lib/docs/scrapers/gensim.rb` from its sources (Sphinx 5 needs
+Python 3.12 or older; the tutorials' output is committed, so they aren't run).
+`sphinx.ext.mathjax` replaces `sphinx.ext.imgmath`, which needs LaTeX, so that the
+math stays TeX for the `sphinx/math` filter:
+
+```sh
+DEVDOCS_ROOT=/path/to/devdocs
+RELEASE=4.4.0
+docker run --rm -v $DEVDOCS_ROOT/docs/gensim:/out python:3.11 bash -ec "
+  git clone -q --depth 1 --branch $RELEASE https://github.com/piskvorky/gensim.git /src
+  cd /src
+  pip -q install cython numpy scipy smart_open 'sphinx==5.1.1' 'sphinx-gallery==0.11.1' \
+    'sphinxcontrib.programoutput==0.17' sphinx_rtd_theme matplotlib memory_profiler \
+    scikit-learn nltk pandas testfixtures 'Jinja2<3.2'
+  python setup.py -q build_ext --inplace
+  cd docs/src && sphinx-build -q -b html -j 4 -D autodoc_mock_imports=Pyro4,nmslib \
+    -D extensions=sphinx.ext.autodoc,sphinx.ext.napoleon,sphinx.ext.mathjax,sphinxcontrib.programoutput,sphinx_gallery.gen_gallery \
+    . /out"
+```
+
 ## Gnuplot
 
 The most recent release can be found near the bottom of
@@ -180,3 +203,20 @@ tar -xf ruby.tar; cd ruby-$RELEASE; ./configure && make html; mv .ext/html path/
 
 To generate the htmls file you have to run `make` command but it does not install Ruby in your system, only generates html files so you have not
 to worry about cleaning or removing a new Ruby installation.
+
+## Sentence Transformers
+
+sbert.net only serves the documentation of the latest release. Build that of the
+release in `lib/docs/scrapers/sentence_transformers.rb` from its sources. torch,
+torchvision and transformers are pinned to the releases of the ICAIC appendix:
+autodoc fails on every class when they don't match.
+
+```sh
+DEVDOCS_ROOT=/path/to/devdocs
+RELEASE=6.0.1
+docker run --rm -v "$DEVDOCS_ROOT/docs/sentence_transformers~6.0:/out" python:3.13 bash -ec "
+  git clone -q --depth 1 --branch v$RELEASE https://github.com/huggingface/sentence-transformers.git /src
+  pip -q install 'torch==2.14.*' 'torchvision==0.29.*' --index-url https://download.pytorch.org/whl/cpu
+  pip -q install '/src[train,image]' 'transformers==5.17.*' --group /src/pyproject.toml:docs
+  cd /src/docs && sphinx-build -q -c . -a -E -j 4 .. /out"
+```

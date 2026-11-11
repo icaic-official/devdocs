@@ -191,6 +191,11 @@ module Docs
       error
     end
 
+    # Filters that read the source files (e.g. local_images) find them here
+    def additional_options
+      super.merge(source_directory: source_directory)
+    end
+
     # Override in a scraper to fetch the original documentation files into
     # #source_directory when they're missing, usually by calling
     # #download_and_extract. See Docs::Dart for an example.

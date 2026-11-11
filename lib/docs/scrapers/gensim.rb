@@ -1,12 +1,12 @@
 module Docs
-  # radimrehurek.com/gensim only serves the documentation of one release,
-  # which is 4.3.3 (the latest release, 4.4.0, hasn't been published there).
-  class Gensim < UrlScraper
+  # radimrehurek.com/gensim only serves the documentation of 4.3.3, so the
+  # documentation of the 4.4 release is built from its sources (see
+  # docs/file-scrapers.md).
+  class Gensim < FileScraper
     self.name = 'gensim'
     self.slug = 'gensim'
     self.type = 'sphinx'
-    self.release = '4.3.3'
-    self.base_url = 'https://radimrehurek.com/gensim/'
+    self.release = '4.4.0'
     self.root_path = 'apiref.html'
     self.initial_paths = %w(intro.html auto_examples/core/index.html auto_examples/tutorials/index.html)
     self.links = {
@@ -14,6 +14,7 @@ module Docs
       code: 'https://github.com/piskvorky/gensim'
     }
 
+    html_filters.insert_before 'clean_local_urls', 'local_images'
     html_filters.push 'gensim/clean_html', 'gensim/entries', 'sphinx/math', 'sphinx/clean_html'
 
     options[:container] = '.rst-content [itemprop="articleBody"]'
@@ -26,10 +27,9 @@ module Docs
     ]
     options[:skip_patterns] = [/\A_modules/, /\A_sources/, /\A_downloads/, /\.(py|ipynb|zip)\z/]
     options[:max_image_size] = 300_000
-    options[:rate_limit] = 300
 
     options[:attribution] = <<-HTML
-      &copy; 2009&ndash;2024 Radim Řehůřek<br>
+      &copy; 2009&ndash;2025 Radim Řehůřek<br>
       Licensed under the GNU LGPLv2.1 license.
     HTML
 
