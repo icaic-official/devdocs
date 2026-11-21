@@ -33,7 +33,7 @@ module Docs
       FileUtils.rm_rf(destination)
       FileUtils.mkpath(destination)
 
-      argv = ['bsdtar', '-xf', archive, '-C', destination]
+      argv = ['bsdtar', '-xf', archive, '--no-xattrs', '--no-acls', '-C', destination]
       # The components of the directory are stripped from every member that's
       # extracted, so that its contents end up at the root of destination.
       argv.push("--strip-components=#{directory.count('/') + 1}", directory) if directory
@@ -45,7 +45,7 @@ module Docs
 
     # Packs the contents of a directory into a gzipped tarball.
     def pack(directory, archive)
-      run 'bsdtar', '-czf', archive, '-C', directory, '.'
+      run 'bsdtar', '-czf', archive, '--no-xattrs', '--no-acls', '-C', directory, '.'
     end
 
     private
