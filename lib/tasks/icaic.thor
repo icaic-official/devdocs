@@ -112,7 +112,10 @@ class IcaicCLI < Thor
           var base = #{base_path.to_json};
           var path = location.pathname;
           if (path.indexOf(base + '/') === 0) {
-            location.replace(base + '/#/' + path.slice(base.length) + location.search + location.hash);
+            // Like the server, drop a trailing slash after a doc's root
+            // (/gymnasium~1.4/api/env/ is /gymnasium~1.4/api/env).
+            path = path.slice(base.length).replace(/^([/][^/]+[/].+?)[/]+$/, '$1');
+            location.replace(base + '/#/' + path + location.search + location.hash);
           }
         </script>
       </head>
