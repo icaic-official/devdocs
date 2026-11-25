@@ -95,7 +95,7 @@ and its Offline Data page points to the Docker image for offline use.
 To build the site locally, after `thor icaic:install`:
 
 ```sh
-BASE_PATH=/devdocs DOCS_ORIGIN=/docs OFFLINE_DATA=false thor assets:compile
+BASE_PATH=/devdocs DOCS_ORIGIN=/docs OFFLINE_DATA=false SELF_HOSTED=true thor assets:compile
 BASE_PATH=/devdocs OFFLINE_DATA=false thor icaic:export_pages _site --url=https://icaic-official.github.io/devdocs
 ```
 

@@ -41,6 +41,7 @@ jobs:
         BASE_PATH: ${{ steps.pages.outputs.base_path }}
         DOCS_ORIGIN: /docs
         OFFLINE_DATA: 'false'
+        SELF_HOSTED: 'true'
     - name: Export the site
       run: bundle exec thor icaic:export_pages _site --url="${{ steps.pages.outputs.base_url }}"
       env:

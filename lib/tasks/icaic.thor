@@ -73,7 +73,7 @@ class IcaicCLI < Thor
     require 'app'
     abort 'ERROR: compile the assets first (thor assets:compile)' unless File.exist?(App.assets_manifest_path)
     config = File.read(File.join(App.assets_path, Sprockets::Manifest.new(nil, App.assets_manifest_path).assets['app/config.js']))
-    abort "ERROR: compile the assets with DOCS_ORIGIN=/docs and BASE_PATH=#{base_path}" unless config.match?(/docs_origin:\s*["']#{Regexp.escape(App.docs_origin)}["']/) && config.match?(/base_path:\s*["']#{Regexp.escape(base_path)}["']/)
+    abort "ERROR: compile the assets with DOCS_ORIGIN=/docs, BASE_PATH=#{base_path} and SELF_HOSTED=true" unless config.match?(/docs_origin:\s*["']#{Regexp.escape(App.docs_origin)}["']/) && config.match?(/base_path:\s*["']#{Regexp.escape(base_path)}["']/) && config.match?(/self_hosted:\s*(true|!0)/)
 
     FileUtils.rm_rf(dir)
     FileUtils.mkpath(dir)
