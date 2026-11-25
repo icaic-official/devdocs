@@ -6,6 +6,7 @@
  * @type {import("../../../assets/javascripts/app/config.js").AppConfig}
  */
 export const config = {
+  base_path: "",
   db_filename: "db.json",
   default_docs: [],
   docs_aliases: {},
@@ -14,6 +15,7 @@ export const config = {
   history_cache_size: 10,
   index_filename: "index.json",
   max_results: 50,
+  offline_data: true,
   production_host: "devdocs.io",
   search_param: "q",
   sentry_dsn: "",

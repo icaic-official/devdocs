@@ -197,6 +197,10 @@ export class Doc extends Model {
    * @param {(event: ProgressEvent) => void} [onProgress]
    */
   install(onSuccess, onError, onProgress) {
+    if (!config.offline_data) {
+      onError();
+      return;
+    }
     if (this.installing) {
       return;
     }

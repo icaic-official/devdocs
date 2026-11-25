@@ -1,5 +1,7 @@
 // @ts-check
 
+import { currentAppPath, withBase } from "../lib/base_path.js";
+
 /**
  * The error shown in place of the content: a title, an explanation and some
  * ways out.
@@ -37,9 +39,9 @@ export const notFoundPage = () =>
 export const pageLoadError = () =>
   error(
     " The page failed to load. ",
-    ` It may be missing from the server (try reloading the app) or you could be offline (try <a href="/offline">installing the documentation for offline usage</a> when online again).<br>
+    ` It may be missing from the server (try reloading the app) or you could be offline (try <a href="${withBase("/offline")}">installing the documentation for offline usage</a> when online again).<br>
 If you're online and you keep seeing this, you're likely behind a proxy or firewall that blocks cross-domain requests. `,
-    ` ${back} &middot; <a href="/#${location.pathname}" target="_top" class="_error-link">Reload</a>
+    ` ${back} &middot; <a href="${withBase(`/#${currentAppPath()}`)}" target="_top" class="_error-link">Reload</a>
 &middot; <a href="#" class="_error-link" data-retry>Retry</a> `,
   );
 
@@ -58,6 +60,14 @@ If you keep seeing this, you're likely behind a proxy or firewall that blocks cr
 export const offlineError = function (reason, exception) {
   if (reason === "storage_blocked") {
     return error(" Local storage must be enabled to use offline mode. ");
+  }
+  if (reason === "no_offline_data") {
+    return error(
+      " Offline mode is unavailable on this site. ",
+      ` This copy of DevDocs is hosted without the files documentations are installed for offline use from.<br>
+The pages still load as you browse. For a copy that works without internet access, run the
+<a href="https://github.com/icaic-official/devdocs/blob/main/DEPLOY.md">Docker image</a>. `,
+    );
   }
 
   reason = (() => {

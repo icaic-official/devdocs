@@ -4,6 +4,7 @@ import { app } from "./app.js";
 import { config } from "./config.js";
 import { Events } from "../lib/events.js";
 import { $ } from "../lib/util.js";
+import { withBase } from "../lib/base_path.js";
 
 /**
  * Registers the service worker and reports when a new one is waiting.
@@ -25,7 +26,7 @@ export class AppServiceWorker extends Events {
     this.notifyUpdate = true;
 
     navigator.serviceWorker
-      .register(config.service_worker_path, { scope: "/" })
+      .register(config.service_worker_path, { scope: withBase("/") })
       .then(
         (registration) => this.updateRegistration(registration),
         (error) => console.error("Could not register service worker:", error),

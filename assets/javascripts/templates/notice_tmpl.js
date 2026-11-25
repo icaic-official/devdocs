@@ -1,6 +1,7 @@
 // @ts-check
 
 import { config } from "../app/config.js";
+import { withBase } from "../lib/base_path.js";
 /** @import { Doc } from "../models/doc.js" */
 
 /**
@@ -20,7 +21,7 @@ export const singleDocNotice = (doc) => {
 
 export const disabledDocNotice = () =>
   notice(` <strong>This documentation is disabled.</strong>
-To enable it, go to <a href="/settings" class="_notice-link">Preferences</a>. `);
+To enable it, go to <a href="${withBase("/settings")}" class="_notice-link">Preferences</a>. `);
 
 export const noOriginalLinkNotice = () =>
   notice(` The original page link is not available for this documentation. `);

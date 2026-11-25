@@ -8,6 +8,7 @@ import { ListSelect } from "../list/list_select.js";
 import { EntryList } from "./entry_list.js";
 import { TypeList } from "./type_list.js";
 import { View } from "../view.js";
+import { withBase } from "../../lib/base_path.js";
 /** @import { Context } from "../../lib/page.js" */
 /** @import { Doc } from "../../models/doc.js" */
 /** @import { Entry } from "../../models/entry.js" */
@@ -190,7 +191,7 @@ export class DocList extends View {
 
   /** @param {Doc | Entry | Type} model The model to mark as being read. */
   select(model) {
-    this.listSelect.selectByHref(model?.fullPath());
+    this.listSelect.selectByHref(model && withBase(model.fullPath()));
   }
 
   /** @param {Entry} model The entry to expand down to and scroll into view. */
@@ -207,7 +208,7 @@ export class DocList extends View {
   /** @param {Entry} model The entry to move the keyboard focus to. */
   focus(model) {
     if (this.listFocus != null) {
-      this.listFocus.focus(this.find(`a[href='${model.fullPath()}']`));
+      this.listFocus.focus(this.find(`a[href='${withBase(model.fullPath())}']`));
     }
   }
 
@@ -255,7 +256,7 @@ export class DocList extends View {
 
   /** @param {Doc | Entry} model The entry to bring into view. */
   scrollTo(model) {
-    $.scrollTo(this.find(`a[href='${model.fullPath()}']`), null, "top", {
+    $.scrollTo(this.find(`a[href='${withBase(model.fullPath())}']`), null, "top", {
       margin: app.isMobile() ? 48 : 0,
     });
   }

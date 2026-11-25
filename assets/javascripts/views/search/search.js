@@ -6,6 +6,7 @@ import { Searcher } from "../../app/searcher.js";
 import { $ } from "../../lib/util.js";
 import { SearchScope } from "./search_scope.js";
 import { View } from "../view.js";
+import { currentAppPath } from "../../lib/base_path.js";
 /** @import { Context } from "../../lib/page.js" */
 /** @import { Doc } from "../../models/doc.js" */
 /** @import { Entry } from "../../models/entry.js" */
@@ -156,7 +157,7 @@ export class Search extends View {
 
   /** Runs the query in the URL hash. */
   searchUrl() {
-    if (location.pathname === "/") {
+    if (currentAppPath() === "/") {
       this.scope.searchUrl();
     } else if (!app.router.isIndex()) {
       return;

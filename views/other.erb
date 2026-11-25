@@ -6,12 +6,12 @@
   <% if doc_index_page? %><meta name="description" content="<%= @doc['name'] %> <%= @doc['release'] %> API documentation with instant search, offline support, keyboard shortcuts, mobile version, and more."><% else %><meta name="robots" content="noindex"><% end %>
   <meta name="format-detection" content="telephone=no">
   <meta name="theme-color" content="#eee">
-  <meta property="og:image" content="/images/icon-320.png">
+  <meta property="og:image" content="<%= base_url '/images/icon-320.png' %>">
   <title>DevDocs<%= " &mdash; #{@doc['full_name']} documentation" if doc_index_page? %></title>
-  <link rel="canonical" href="<%= canonical_origin %><%= request.path %>">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="Search DevDocs">
+  <link rel="canonical" href="<%= canonical_origin %><%= request.path_info %>">
+  <link rel="manifest" href="<%= base_url '/manifest.json' %>">
+  <link rel="icon" type="image/x-icon" href="<%= base_url '/favicon.ico' %>">
+  <link rel="search" type="application/opensearchdescription+xml" href="<%= base_url '/opensearch.xml' %>" title="Search DevDocs">
   <%= stylesheet_tag 'application' %>
 </head>
 <body data-doc="<%= CGI::escape_html @doc.to_json %>">

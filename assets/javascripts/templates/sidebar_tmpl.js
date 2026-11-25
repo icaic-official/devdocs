@@ -2,6 +2,7 @@
 
 import { app } from "../app/app.js";
 import { $ } from "../lib/util.js";
+import { withBase } from "../lib/base_path.js";
 /** @import { Doc } from "../models/doc.js" */
 /** @import { Entry } from "../models/entry.js" */
 /** @import { Type } from "../models/type.js" */
@@ -31,7 +32,7 @@ export const sidebarDoc = function (doc, options) {
   if (options == null) {
     options = {};
   }
-  let link = `<a href="${doc.fullPath()}" class="_list-item _icon-${doc.icon} `;
+  let link = `<a href="${withBase(doc.fullPath())}" class="_list-item _icon-${doc.icon} `;
   link += options.disabled ? "_list-disabled" : "_list-dir";
   link += `" data-slug="${doc.slug}" title="${doc.fullName}" tabindex="-1">`;
   if (options.disabled) {
@@ -56,7 +57,7 @@ export const sidebarDoc = function (doc, options) {
  * @returns {string}
  */
 export const sidebarType = (type) =>
-  `<a href="${type.fullPath()}" class="_list-item _list-dir" data-slug="${
+  `<a href="${withBase(type.fullPath())}" class="_list-item _list-dir" data-slug="${
     type.slug
   }" tabindex="-1">${arrow}<span class="_list-count">${
     type.count
@@ -69,7 +70,7 @@ export const sidebarType = (type) =>
  * @returns {string}
  */
 export const sidebarEntry = (entry) =>
-  `<a href="${entry.fullPath()}" class="_list-item _list-hover" tabindex="-1">${$.escape(
+  `<a href="${withBase(entry.fullPath())}" class="_list-item _list-hover" tabindex="-1">${$.escape(
     entry.name,
   )}</a>`;
 
@@ -88,7 +89,7 @@ export const sidebarResult = function (entry) {
   if (entry.doc.version && !entry.isIndex()) {
     addons += `<span class="_list-count">${entry.doc.short_version}</span>`;
   }
-  return `<a href="${entry.fullPath()}" class="_list-item _list-hover _list-result _icon-${
+  return `<a href="${withBase(entry.fullPath())}" class="_list-item _list-hover _list-result _icon-${
     entry.doc.icon
   }" tabindex="-1">${addons}<span class="_list-text">${$.escape(
     entry.name,
@@ -105,7 +106,7 @@ export const sidebarNoResults = function () {
   let html = ' <div class="_list-note">No results.</div> ';
   if (!app.isSingleDoc() && !app.disabledDocs.isEmpty()) {
     html += `\
-<div class="_list-note">Note: documentations must be <a href="/settings" class="_list-note-link">enabled</a> to appear in the search.</div>\
+<div class="_list-note">Note: documentations must be <a href="${withBase("/settings")}" class="_list-note-link">enabled</a> to appear in the search.</div>\
 `;
   }
   return html;
@@ -171,7 +172,7 @@ export const sidebarVersionedDoc = function (doc, versions, options) {
  * @returns {string}
  */
 export const sidebarDisabled = (options) =>
-  `<h6 class="_list-title">${arrow}Disabled (${options.count}) <a href="/settings" class="_list-title-link" tabindex="-1">Customize</a></h6>`;
+  `<h6 class="_list-title">${arrow}Disabled (${options.count}) <a href="${withBase("/settings")}" class="_list-title-link" tabindex="-1">Customize</a></h6>`;
 
 /**
  * @param {string} html The rendered disabled docs.

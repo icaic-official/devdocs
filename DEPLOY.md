@@ -71,6 +71,34 @@ RACK_ENV=production DOCS_ORIGIN=/docs FORCE_SSL=false SELF_HOSTED=true \
   bundle exec rackup -o 0.0.0.0 -p 9292
 ```
 
+## GitHub Pages
+
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) publishes the app as a static
+site at <https://icaic-official.github.io/devdocs/> on every push to `main` (or by hand from
+the Actions tab). The server only renders a few pages, so `thor icaic:export_pages` renders
+them once and copies them with the docs and assets into a directory GitHub Pages serves.
+Deep links like `/devdocs/python~3.13/library/os` have no file, so Pages answers them with
+`404.html`, which hands the path to the app.
+
+Two settings make this work, and both are set when the assets are compiled:
+
+| Variable | Value on Pages | Purpose |
+| --- | --- | --- |
+| `BASE_PATH` | `/devdocs` | Path the app is served under. Every URL it generates starts with it. Empty (the default) at the root of a domain. |
+| `OFFLINE_DATA` | `false` | Leave out each doc's `db.json`, and turn off installing docs for offline use. |
+
+Pages limits a site to 1 GB. Each doc is stored twice: as one file per page (about 660 MB
+in all) and as `db.json` (about 740 MB), the file the app installs a doc for offline use
+from. So the Pages site only has the pages. It works as long as the browser is online,
+and its Offline Data page points to the Docker image for offline use.
+
+To build the site locally, after `thor icaic:install`:
+
+```sh
+BASE_PATH=/devdocs DOCS_ORIGIN=/docs OFFLINE_DATA=false thor assets:compile
+BASE_PATH=/devdocs OFFLINE_DATA=false thor icaic:export_pages _site --url=https://icaic-official.github.io/devdocs
+```
+
 ## Lapiz branch preview
 
 Build the image in a terminal first (`docker build -t icaic-devdocs .`). The initial

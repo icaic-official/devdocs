@@ -22,6 +22,7 @@ import { Notice } from "../views/misc/notice.js";
 import { Notif } from "../views/misc/notif.js";
 import { Tip } from "../views/misc/tip.js";
 import { Updates } from "../views/misc/updates.js";
+import { currentAppPath, withBase } from "../lib/base_path.js";
 
 /**
  * A doc as it appears in the manifest, before it becomes a `Doc`.
@@ -372,7 +373,7 @@ export class App extends Events {
       this.docs.sort();
       this.initDoc(doc);
       this.saveDocs();
-      if (app.settings.get("autoInstall")) {
+      if (config.offline_data && app.settings.get("autoInstall")) {
         doc.install(_onSuccess, onError);
       } else {
         _onSuccess();
@@ -405,10 +406,11 @@ export class App extends Events {
 
   /** Reloads the app, keeping the current path. */
   reboot() {
-    if (location.pathname !== "/" && location.pathname !== "/settings") {
-      window.location.href = `/#${location.pathname}`;
+    const path = currentAppPath();
+    if (path !== "/" && path !== "/settings") {
+      window.location.href = withBase(`/#${path}`);
     } else {
-      window.location.href = "/";
+      window.location.href = withBase("/");
     }
   }
 
@@ -433,7 +435,7 @@ export class App extends Events {
     if (this.serviceWorker != null) {
       this.serviceWorker.update();
     }
-    window.location.href = "/";
+    window.location.href = withBase("/");
   }
 
   /**

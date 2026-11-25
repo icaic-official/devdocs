@@ -5,6 +5,7 @@ import { $ } from "../../lib/util.js";
 import { ListFocus } from "../list/list_focus.js";
 import { ListSelect } from "../list/list_select.js";
 import { View } from "../view.js";
+import { withBase } from "../../lib/base_path.js";
 /** @import { Context } from "../../lib/page.js" */
 /** @import { Doc } from "../../models/doc.js" */
 /** @import { Entry } from "../../models/entry.js" */
@@ -118,7 +119,7 @@ export class Results extends View {
    */
   afterRoute(route, context) {
     if (route === "entry") {
-      this.listSelect.selectByHref(context.entry.fullPath());
+      this.listSelect.selectByHref(withBase(context.entry.fullPath()));
     } else {
       this.listSelect.deselect();
     }

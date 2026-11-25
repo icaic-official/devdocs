@@ -1,6 +1,7 @@
 // @ts-check
 
 import { app } from "../../app/app.js";
+import { withBase } from "../../lib/base_path.js";
 import { config } from "../../app/config.js";
 import { AppServiceWorker } from "../../app/serviceworker.js";
 import { $ } from "../../lib/util.js";
@@ -65,7 +66,7 @@ export const offlinePage = (docs, hasPersistence, isPersistent) => `\
   <dt>How do I uninstall/reset the app?
   <dd>Click <a href="#" data-behavior="reset">here</a>.
   <dt>Why aren't all documentations listed above?
-  <dd>You have to <a href="/settings">enable</a> them first.
+  <dd>You have to <a href="${withBase("/settings")}">enable</a> them first.
 </dl>\
 `;
 

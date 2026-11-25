@@ -4,9 +4,9 @@ const cacheName = '<%= service_worker_cache_name %>';
 
 <%# Url's to cache when the service worker is installed %>
 const urlsToCache = [
-  '/',
-  '/favicon.ico',
-  '/manifest.json',
+  '<%= base_url '/' %>',
+  '<%= base_url '/favicon.ico' %>',
+  '<%= base_url '/manifest.json' %>',
   '<%= service_worker_asset_urls.join "',\n  '" %>',
 ];
 
@@ -66,7 +66,7 @@ self.addEventListener('fetch', event => {
       <%# Attempt to return the index page from the cache if the user is visiting a url like devdocs.io/offline or devdocs.io/javascript/global_objects/array/find %>
       <%# The index page will make sure the correct documentation or a proper offline page is shown  %>
       if (url.origin === location.origin && !extensions.some(ext => filename.endsWith(ext))) {
-        const cachedIndex = await caches.match('/');
+        const cachedIndex = await caches.match('<%= base_url '/' %>');
         if (cachedIndex) return cachedIndex;
       }
 

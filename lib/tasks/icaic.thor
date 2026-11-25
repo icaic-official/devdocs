@@ -52,6 +52,83 @@ class IcaicCLI < Thor
     end
   end
 
+  # The app's server only renders a handful of pages, and everything else is
+  # static files, so the whole app fits a static host like GitHub Pages: the
+  # pages are rendered once here, and deep links (which have no file) go
+  # through 404.html, which hands the path to the app in the URL's hash.
+  #
+  # Run after `thor icaic:install` and `thor assets:compile`, with the same
+  # BASE_PATH as the assets were compiled with.
+  desc 'export_pages <dir> --url=<url>', 'Export the installed docs and the app as a static site'
+  option :url, required: true, desc: 'URL the site is served at, e.g. https://example.github.io/devdocs'
+  def export_pages(dir)
+    url = options[:url].chomp('/')
+    base_path = URI(url).path
+    abort "ERROR: BASE_PATH (#{ENV['BASE_PATH'].inspect}) must match the URL's path (#{base_path.inspect})" unless ENV['BASE_PATH'].to_s.chomp('/') == base_path
+
+    ENV['RACK_ENV'] = 'production'
+    ENV['FORCE_SSL'] = 'false'
+    ENV['SELF_HOSTED'] = 'true'
+    ENV['DOCS_ORIGIN'] = '/docs'
+    require 'app'
+    abort 'ERROR: compile the assets first (thor assets:compile)' unless File.exist?(App.assets_manifest_path)
+    config = File.read(File.join(App.assets_path, Sprockets::Manifest.new(nil, App.assets_manifest_path).assets['app/config.js']))
+    abort "ERROR: compile the assets with DOCS_ORIGIN=/docs and BASE_PATH=#{base_path}" unless config.match?(/docs_origin:\s*["']#{Regexp.escape(App.docs_origin)}["']/) && config.match?(/base_path:\s*["']#{Regexp.escape(base_path)}["']/)
+
+    FileUtils.rm_rf(dir)
+    FileUtils.mkpath(dir)
+    public = App.public_folder
+    %w(assets docs images favicon.ico manifest.json mathml.css robots.txt).each do |name|
+      FileUtils.cp_r(File.join(public, name), dir)
+    end
+    # Each doc is stored twice: as one file per page, which the app loads as
+    # it browses, and as db.json, which it downloads to install the doc for
+    # offline use. Pages caps a site at 1 GB, which the two together exceed.
+    Dir[File.join(dir, 'docs', '*', 'db.json')].each { |file| File.delete(file) } if ENV['OFFLINE_DATA'] == 'false'
+
+    request = Rack::MockRequest.new(App)
+    host = URI(url).host
+    render = lambda do |path|
+      response = request.get("#{base_path}#{path}", 'HTTP_HOST' => host, 'SCRIPT_NAME' => base_path, 'PATH_INFO' => path, 'rack.url_scheme' => 'https')
+      abort "ERROR: #{path} rendered #{response.status}" unless response.ok?
+      response.body
+    end
+
+    index = render.('/')
+    File.write(File.join(dir, 'index.html'), index)
+    # Pages serves /settings from settings.html, so the app's own pages load
+    # directly instead of going through 404.html.
+    %w(settings offline about news help).each { |page| File.write(File.join(dir, "#{page}.html"), index) }
+    File.write(File.join(dir, 'service-worker.js'), render.('/service-worker.js'))
+    File.write(File.join(dir, '404.html'), <<~HTML)
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <title>DevDocs</title>
+        <script>
+          // Pages has no file for an app path like /python~3.13/library/os, so
+          // it lands here. Hand it to the app, which reads it back off the hash.
+          var base = #{base_path.to_json};
+          var path = location.pathname;
+          if (path.indexOf(base + '/') === 0) {
+            location.replace(base + '/#/' + path.slice(base.length) + location.search + location.hash);
+          }
+        </script>
+      </head>
+      <body>Page not found. <a href="#{base_path}/">Go to DevDocs</a>.</body>
+      </html>
+    HTML
+    File.write(File.join(dir, 'opensearch.xml'),
+      File.read(File.join(public, 'opensearch.xml')).gsub('https://devdocs.io', url))
+    # Otherwise Pages runs the site through Jekyll, which drops files and
+    # directories whose names start with an underscore.
+    FileUtils.touch(File.join(dir, '.nojekyll'))
+
+    size = Dir[File.join(dir, '**', '*')].sum { |file| File.file?(file) ? File.size(file) : 0 }
+    puts "Exported #{Icaic.doc_slugs.length} docs to #{dir} (#{(size / 1024.0 / 1024).round} MB) for #{url}"
+  end
+
   desc 'status', 'List the appendix packages and the docs that cover them'
   def status
     Icaic.entries.each do |entry|

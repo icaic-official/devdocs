@@ -1,6 +1,7 @@
 // @ts-check
 
 import { app } from "../app/app.js";
+import { withBase } from "../lib/base_path.js";
 
 export const tipKeyNav = () => `\
 <p class="_notif-text">
@@ -16,5 +17,5 @@ export const tipKeyNav = () => `\
       : ', <code class="_label">alt &darr;/&uarr;</code> or <code class="_label">shift &darr;/&uarr;</code>'
   } to scroll the page.
 <p class="_notif-text">
-  <a href="/help#shortcuts" class="_notif-link">See all keyboard shortcuts</a>\
+  <a href="${withBase("/help#shortcuts")}" class="_notif-link">See all keyboard shortcuts</a>\
 `;

@@ -2,6 +2,7 @@
 
 import { $ } from "../../lib/util.js";
 import { render } from "../base.js";
+import { withBase } from "../../lib/base_path.js";
 /** @import { Entry } from "../../models/entry.js" */
 /** @import { Type } from "../../models/type.js" */
 
@@ -26,5 +27,5 @@ export const typePage = (type) => {
  * @returns {string}
  */
 export const typePageEntry = (entry) => {
-  return `<li><a href="${entry.fullPath()}">${$.escape(entry.name)}</a></li>`;
+  return `<li><a href="${withBase(entry.fullPath())}">${$.escape(entry.name)}</a></li>`;
 };

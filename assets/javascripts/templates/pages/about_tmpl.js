@@ -1,6 +1,7 @@
 // @ts-check
 
 import { app } from "../../app/app.js";
+import { withBase } from "../../lib/base_path.js";
 
 export const aboutPage = function () {
   let doc;
@@ -89,7 +90,7 @@ export const aboutPage = function () {
 <ul>
   <li><a href="https://devdocs.io">devdocs.io</a> ("App") is operated by <a href="https://www.freecodecamp.org/">freeCodeCamp</a> ("We").
   <li>We do not collect personal information through the app.
-  <li>We use Google Analytics and Gauges to collect anonymous traffic information if you have given consent to this. You can change your decision in the <a href="/settings">settings</a>.
+  <li>We use Google Analytics and Gauges to collect anonymous traffic information if you have given consent to this. You can change your decision in the <a href="${withBase("/settings")}">settings</a>.
   <li>We use Sentry to collect crash data and improve the app.
   <li>The app uses local storage to store user preferences.
   <li>By using the app, you signify your acceptance of this policy. If you do not agree to this policy, please do not use the app.

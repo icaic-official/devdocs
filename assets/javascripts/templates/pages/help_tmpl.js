@@ -1,6 +1,7 @@
 // @ts-check
 
 import { app } from "../../app/app.js";
+import { withBase } from "../../lib/base_path.js";
 import { config } from "../../app/config.js";
 import { $ } from "../../lib/util.js";
 
@@ -29,12 +30,12 @@ export const helpPage = function () {
 
 <h2 class="_block-heading" id="managing-documentations">Managing Documentations</h2>
 <p>
-  Documentations can be enabled and disabled in the <a href="/settings">Preferences</a>.
+  Documentations can be enabled and disabled in the <a href="${withBase("/settings")}">Preferences</a>.
   Alternatively, you can enable a documentation by searching for it in the main search
   and clicking the "Enable" link in the results.
   For faster and better search, only enable the documentations you plan on actively using.
 <p>
-  Once a documentation is enabled, it becomes part of the search and its content can be downloaded for offline access — and faster page loads when online — in the <a href="/offline">Offline</a> area.
+  Once a documentation is enabled, it becomes part of the search and its content can be downloaded for offline access — and faster page loads when online — in the <a href="${withBase("/offline")}">Offline</a> area.
 
 <h2 class="_block-heading" id="search">Search</h2>
 <p>
@@ -52,10 +53,10 @@ export const helpPage = function () {
     <code class="_label">esc</code>.
   <dt id="url_search">Prefilling the search field
   <dd>
-    The search can be prefilled from the URL by visiting <a href="/#q=keyword" target="_top">devdocs.io/#q=keyword</a>.
+    The search can be prefilled from the URL by visiting <a href="${withBase("/#q=keyword")}" target="_top">devdocs.io/#q=keyword</a>.
     Characters after <code class="_label">#q=</code> will be used as search query.<br>
     To search a single documentation, add its name (or an abbreviation) and a space before the keyword:
-    <a href="/#q=js%20date" target="_top">devdocs.io/#q=js date</a>.
+    <a href="${withBase("/#q=js%20date")}" target="_top">devdocs.io/#q=js date</a>.
   <dt id="browser_search">Searching using the address bar
   <dd>
     DevDocs supports OpenSearch. It can easily be installed as a search engine on most web browsers:

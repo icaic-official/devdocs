@@ -3,6 +3,7 @@
 import { app } from "./app.js";
 import { Events } from "../lib/events.js";
 import { page } from "../lib/page.js";
+import { currentAppPath } from "../lib/base_path.js";
 /** @import { Context } from "../lib/page.js" */
 
 /**
@@ -250,12 +251,12 @@ export class Router extends Events {
    */
   setInitialPath() {
     // Remove superfluous forward slashes at the beginning of the path
-    let path = location.pathname.replace(/^\/{2,}/g, "/");
-    if (path !== location.pathname) {
+    let path = currentAppPath().replace(/^\/{2,}/g, "/");
+    if (path !== currentAppPath()) {
       page.replace(path + location.search + location.hash, null, true);
     }
 
-    if (location.pathname === "/") {
+    if (currentAppPath() === "/") {
       if ((path = this.getInitialPathFromHash())) {
         page.replace(path + location.search, null, true);
       }
@@ -276,7 +277,7 @@ export class Router extends Events {
    */
   replaceHash(hash) {
     page.replace(
-      location.pathname + location.search + (hash || ""),
+      currentAppPath() + location.search + (hash || ""),
       null,
       true
     );

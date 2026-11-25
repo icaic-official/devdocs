@@ -1,0 +1,63 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only the tip of main is worth publishing; a newer push supersedes a run.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build the static site
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+    - name: Install libwebp tools and bsdtar
+      run: sudo apt-get update && sudo apt-get install -y webp libarchive-tools
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+      with:
+        bundler-cache: true
+    - name: Configure Pages
+      id: pages
+      uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+    - name: Install the docs
+      run: bundle exec thor icaic:install
+    # The URL path the site is served under (/devdocs for a project site, empty
+    # on a custom domain) is baked into the assets, so it's set from here on.
+    - name: Compile the assets
+      run: bundle exec thor assets:compile
+      env:
+        BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        DOCS_ORIGIN: /docs
+        OFFLINE_DATA: 'false'
+    - name: Export the site
+      run: bundle exec thor icaic:export_pages _site --url="${{ steps.pages.outputs.base_url }}"
+      env:
+        BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        DOCS_ORIGIN: /docs
+        OFFLINE_DATA: 'false'
+    - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+      with:
+        path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - id: deployment
+      uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

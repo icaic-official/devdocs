@@ -2,6 +2,7 @@
 
 /** @type {import('./config.js').AppConfig} */
 export const config = {
+  base_path: '<%= App.base_path %>',
   db_filename: 'db.json',
   default_docs: <%= App.default_docs.to_json %>,
   docs_aliases: <%= App.docs_aliases.to_json %>,
@@ -10,14 +11,15 @@ export const config = {
   history_cache_size: 10,
   index_filename: 'index.json',
   max_results: 50,
+  offline_data: <%= ENV['OFFLINE_DATA'] != 'false' %>,
   production_host: 'devdocs.io',
   self_hosted: <%= App.self_hosted %>,
   search_param: 'q',
   sentry_dsn: '<%= App.sentry_dsn %>',
   version: <%= Time.now.to_i %>,
   release: <%= Time.now.utc.httpdate.to_json %>,
-  mathml_stylesheet: '/mathml.css',
+  mathml_stylesheet: '<%= App.base_path %>/mathml.css',
   favicon_spritesheet: '<%= image_path('sprites/docs.webp') %>',
-  service_worker_path: '/service-worker.js',
+  service_worker_path: '<%= App.base_path %>/service-worker.js',
   service_worker_enabled: <%= App.environment == :production || ENV['ENABLE_SERVICE_WORKER'] == 'true' %>,
 }

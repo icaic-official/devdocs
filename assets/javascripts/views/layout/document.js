@@ -10,6 +10,7 @@ import { Resizer } from "./resizer.js";
 import { SettingsView } from "./settings.js";
 import { Sidebar } from "../sidebar/sidebar.js";
 import { View } from "../view.js";
+import { currentAppPath } from "../../lib/base_path.js";
 
 /**
  * The root view, bound to the document itself.
@@ -106,7 +107,7 @@ export class AppDocument extends View {
   /** Goes up to the doc's index, or to the app's index. */
   onEscape() {
     const path =
-      !app.isSingleDoc() || location.pathname === app.doc.fullPath()
+      !app.isSingleDoc() || currentAppPath() === app.doc.fullPath()
         ? "/"
         : app.doc.fullPath();
 

@@ -2,6 +2,7 @@
 
 import { config } from "../app/config.js";
 import { newsList } from "./pages/news_tmpl.js";
+import { withBase } from "../lib/base_path.js";
 /** @import { Doc } from "../models/doc.js" */
 
 /**
@@ -109,7 +110,7 @@ export const notifUpdates = function (docs, disabledDocs) {
       if (doc.release) {
         html += ` <code>&rarr;</code> ${doc.release}`;
       }
-      html += '<span class="_notif-info"><a href="/settings">Enable</a></span>';
+      html += `<span class="_notif-info"><a href="${withBase("/settings")}">Enable</a></span>`;
     }
     html += "</ul></div>";
   }
@@ -128,7 +129,7 @@ export const notifShare = () =>
 export const notifUpdateDocs = () =>
   textNotif(
     " Documentation updates available. ",
-    ' <a href="/offline">Install them</a> as soon as possible to avoid broken pages. ',
+    ` <a href="${withBase("/offline")}">Install them</a> as soon as possible to avoid broken pages. `,
   );
 
 export const notifAnalyticsConsent = () =>

@@ -7,6 +7,7 @@ import {
 } from "./settings_store.js";
 import { $ } from "./util.js";
 import { Notif } from "../views/misc/notif.js";
+import { currentAppPath, withBase, withoutBase } from "./base_path.js";
 
 /*
  * Based on github.com/visionmedia/page.js
@@ -141,7 +142,7 @@ page.show = function (path, state) {
   const res = page.dispatch(context);
   if (res) {
     currentState = previousState;
-    location.assign(res);
+    location.assign(withBase(res));
   } else {
     context.pushState();
     updateCanonicalLink();
@@ -185,7 +186,7 @@ page.canGoBack = () => !Context.isInitialState(currentState);
 
 page.canGoForward = () => !Context.isLastState(currentState);
 
-const currentPath = () => location.pathname + location.search + location.hash;
+const currentPath = () => currentAppPath() + location.search + location.hash;
 
 export class Context {
   /**
@@ -314,13 +315,13 @@ export class Context {
 
   /** Adds a history entry for this context. */
   pushState() {
-    history.pushState(this.state, "", this.path);
+    history.pushState(this.state, "", withBase(this.path));
   }
 
   /** Replaces the current history entry with this context. */
   replaceState() {
     try {
-      history.replaceState(this.state, "", this.path);
+      history.replaceState(this.state, "", withBase(this.path));
     } catch (error) {} // NS_ERROR_FAILURE in Firefox
   }
 }
@@ -486,11 +487,13 @@ var onDocumentClick = function (event) {
     link.target instanceof SVGAnimatedString ? link.target.baseVal : link.target;
 
   if (!target && isSameOrigin(href)) {
-    event.preventDefault();
     let parsedHref = new URL(href);
-    let path = parsedHref.pathname + parsedHref.search + parsedHref.hash;
-    path = path.replace(/^\/\/+/, "/"); // IE11 bug
-    page.show(path);
+    // Same origin but outside the app's base path: another site on the
+    // same host (e.g. a sibling GitHub Pages project), so leave it be.
+    let pathname = withoutBase(parsedHref.pathname.replace(/^\/\/+/, "/"));
+    if (pathname == null) return;
+    event.preventDefault();
+    page.show(pathname + parsedHref.search + parsedHref.hash);
   }
 };
 

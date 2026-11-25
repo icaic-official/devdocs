@@ -1,6 +1,7 @@
 // @ts-check
 
 import { app } from "../../app/app.js";
+import { config } from "../../app/config.js";
 import { OfflineBackup } from "../../app/offline_backup.js";
 import { $ } from "../../lib/util.js";
 import { render } from "../../templates/base.js";
@@ -30,6 +31,10 @@ export class OfflinePage extends View {
   render() {
     if (app.storageBlocked) {
       this.html(this.tmpl("offlineError", "storage_blocked"));
+      return;
+    }
+    if (!config.offline_data) {
+      this.html(this.tmpl("offlineError", "no_offline_data"));
       return;
     }
 

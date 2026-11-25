@@ -5,6 +5,7 @@ import { config } from "../../app/config.js";
 import { SynchronousSearcher } from "../../app/searcher.js";
 import { $ } from "../../lib/util.js";
 import { View } from "../view.js";
+import { withBase } from "../../lib/base_path.js";
 /** @import { App } from "../../app/app.js" */
 /** @import { Context } from "../../lib/page.js" */
 /** @import { Doc } from "../../models/doc.js" */
@@ -137,7 +138,7 @@ export class SearchScope extends View {
   redirectToDoc(doc) {
     const { hash } = location;
     app.router.replaceHash("");
-    location.assign(doc.fullPath() + hash);
+    location.assign(withBase(doc.fullPath()) + hash);
   }
 
   /** Drops the scope and restores the field. */

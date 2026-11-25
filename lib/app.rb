@@ -46,6 +46,11 @@ class App < Sinatra::Application
     set :root, Pathname.new(File.expand_path('../..', __FILE__))
     set :sprockets, Sprockets::Environment.new(root)
 
+    # Path the app is served under, without a trailing slash: empty at the
+    # root of a domain, e.g. '/devdocs' for a GitHub Pages project site. Every
+    # URL the app generates is prefixed with it.
+    set :base_path, ENV['BASE_PATH'].to_s.sub(%r{/+\z}, '').then { |path| path.empty? || path.start_with?('/') ? path : "/#{path}" }
+
     set :assets_prefix, 'assets'
     set :assets_path, File.join(public_folder, assets_prefix)
     set :assets_manifest_path, File.join(assets_path, 'manifest.json')
@@ -64,7 +69,7 @@ class App < Sinatra::Application
 
     require 'json'
     set :docs_prefix, 'docs'
-    set :docs_origin, File.join('', docs_prefix)
+    set :docs_origin, "#{base_path}/#{docs_prefix}"
     set :docs_path, File.join(public_folder, docs_prefix)
     set :docs_manifest_path, File.join(docs_path, 'docs.json')
     require 'icaic'
@@ -83,7 +88,7 @@ class App < Sinatra::Application
 
     Sprockets::Helpers.configure do |config|
       config.environment = sprockets
-      config.prefix = "/#{assets_prefix}"
+      config.prefix = "#{base_path}/#{assets_prefix}"
       config.public_path = public_folder
       config.protocol = :relative
     end
@@ -111,7 +116,12 @@ class App < Sinatra::Application
 
   configure :production do
     set :static, false
-    set :docs_origin, ENV['DOCS_ORIGIN'] || '//documents.devdocs.io'
+    # A path on this server (e.g. /docs) is under the base path, like the rest
+    # of the app; a URL (//documents.devdocs.io) is used as is.
+    set :docs_origin, ENV['DOCS_ORIGIN'].then { |origin|
+      next '//documents.devdocs.io' unless origin
+      origin.match?(%r{\A/(?!/)}) ? "#{base_path}#{origin}" : origin
+    }
     set :csp, "default-src 'self' *; script-src 'self' 'nonce-devdocs' https://www.google-analytics.com https://secure.gaug.es https://*.jquery.com; font-src 'none'; style-src 'self' 'unsafe-inline' *; img-src 'self' * data:;"
 
     use Rack::ConditionalGet
@@ -175,7 +185,13 @@ class App < Sinatra::Application
     include Sprockets::Helpers
 
     def canonical_origin
-      "https://#{request.host_with_port}"
+      "https://#{request.host_with_port}#{App.base_path}"
+    end
+
+    # Prefixes a root-relative path with the path the app is served under.
+    # @param path [String] e.g. '/images/icon.png'
+    def base_url(path)
+      "#{App.base_path}#{path}"
     end
 
     def find_doc(slug)
@@ -221,7 +237,7 @@ class App < Sinatra::Application
     # modules. It can't end up with half of one build and half of another.
     def import_map_json
       imports = mapped_js_modules.to_h do |logical|
-        ["/#{App.assets_prefix}/#{logical}", javascript_path(logical)]
+        ["#{App.base_path}/#{App.assets_prefix}/#{logical}", javascript_path(logical)]
       end
       JSON.generate(imports: imports)
     end
