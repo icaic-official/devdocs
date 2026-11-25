@@ -131,12 +131,24 @@ class IcaicCLI < Thor
 
   desc 'status', 'List the appendix packages and the docs that cover them'
   def status
+    mismatched = false
     Icaic.entries.each do |entry|
       state = if entry['doc'].nil? then 'MISSING'
               elsif File.exist?(Icaic.package_path(entry['doc'])) then 'package'
               else 'devdocs.io'
               end
-      puts format('%-24s %-8s %-18s %s', entry['package'], entry['version'], entry['doc'] || '-', state)
+      # The release of the installed doc, which has to be of the listed
+      # version: 3.0.6 is of 3.0, 3.1.1 isn't.
+      meta = entry['doc'] && File.join(Docs.store_path, entry['doc'], 'meta.json')
+      if meta && File.exist?(meta)
+        release = JSON.parse(File.read(meta))['release'].to_s
+        unless release == entry['version'] || release.start_with?("#{entry['version']}.")
+          mismatched = true
+          release += ' (NOT OF THE LISTED VERSION)'
+        end
+      end
+      puts format('%-24s %-8s %-26s %-11s %s', entry['package'], entry['version'], entry['doc'] || '-', state, release || 'not installed')
     end
+    exit 1 if mismatched
   end
 end

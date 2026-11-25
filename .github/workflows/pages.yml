@@ -33,6 +33,8 @@ jobs:
       uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
     - name: Install the docs
       run: bundle exec thor icaic:install
+    - name: Check that every doc is of the release the appendix lists
+      run: bundle exec thor icaic:status
     # The URL path the site is served under (/devdocs for a project site, empty
     # on a custom domain) is baked into the assets, so it's set from here on.
     - name: Compile the assets

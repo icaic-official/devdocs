@@ -18,9 +18,11 @@ module Docs
       Licensed under the 3-clause BSD License.
     HTML
 
+    # pandas.pydata.org serves the 3.0 docs (of the latest 3.0 release) by
+    # minor version only.
     version '3' do
-      self.release = '3.0.8'
-      self.base_url = "https://pandas.pydata.org/pandas-docs/version/#{self.release}/"
+      self.release = '3.0.6'
+      self.base_url = 'https://pandas.pydata.org/pandas-docs/version/3.0/'
 
       html_filters.push 'pandas/clean_html', 'pandas/entries'
 

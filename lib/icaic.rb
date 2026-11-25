@@ -24,11 +24,10 @@ module Icaic
   # Images larger than this, even as lossy WebP, stay remote.
   MAX_IMAGE_SIZE = 5_000_000
 
-  # Where to look for an image when its URL is broken: the devdocs.io pandas
-  # package points to the 3.0.8 docs, which pandas.pydata.org doesn't serve.
-  IMAGE_URL_FALLBACKS = {
-    %r{\Ahttps://pandas\.pydata\.org/pandas-docs/version/[\d.]+/} => 'https://pandas.pydata.org/docs/'
-  }
+  # Where to look for an image when its URL is broken, by the URL pattern to
+  # replace. Only for a copy of the same release, so that the image matches the
+  # doc. None is needed at the moment.
+  IMAGE_URL_FALLBACKS = {}
 
   # Makes the images of an installed doc work without internet access: embeds
   # the remote ones (those a scraper left remote, being bigger than its

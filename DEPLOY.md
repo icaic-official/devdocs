@@ -4,24 +4,31 @@ This repository is [DevDocs](https://github.com/freeCodeCamp/devdocs) limited to
 documentation of the components listed in the
 [ICAIC 2026 technical appendix](https://icaic-official.github.io/docs/technical-appendix.html):
 Python 3.13 and the Python packages of section 2. Nothing else is installed or shown.
+The appendix is the source of truth: when it changes, add, remove or rebuild docs so that
+the selection matches it (see [Adding or updating a doc](#adding-or-updating-a-doc)).
 
 The selection lives in [`config/icaic_docs.yml`](config/icaic_docs.yml), one entry per
 appendix item. Docs come from one of two places:
 
-- `docs-packages/<doc>.tar.gz`, for docs built by this repository's scrapers (committed);
+- `docs-packages/<doc>.tar.gz`, for docs built by this repository's scrapers (committed),
+  pandas and Gymnasium among them;
 - otherwise downloads.devdocs.io, for docs DevDocs already publishes (Python, PyTorch,
-  scikit-learn, NumPy, pandas, Polars and scikit-image).
+  scikit-learn, NumPy, Polars and scikit-image).
 
 `thor icaic:install` then embeds every image that is still remote (those of the
 devdocs.io packages and a few large ones in the Hugging Face docs) into the docs, so they
 are complete without internet access. It prints a warning for any image it can't fetch;
-seven images are broken at their source (one in TRL, three in Transformers, three plots
-in pandas).
+four images are broken at their source (one in TRL, three in Transformers).
 
 The projects' sites don't publish the docs of the NLTK 3.10, gensim 4.4 and Sentence
 Transformers 6.0 releases the appendix lists, so those are built from the projects'
-sources (see [docs/file-scrapers.md](docs/file-scrapers.md)). Every doc is of the
-release the appendix lists.
+sources (see [docs/file-scrapers.md](docs/file-scrapers.md)). downloads.devdocs.io
+publishes the latest pandas 3 release (3.1), so pandas 3.0 (3.0.6, its latest release) is
+built from the archive of the 3.0 docs on pandas.pydata.org, which its scraper downloads.
+Gymnasium 1.4 is scraped from gymnasium.farama.org/v1.4.0/. Every doc is of the release
+the appendix lists: `thor icaic:status` fails if an installed doc's release isn't of the
+version its entry lists (3.0.6 is of 3.0, 3.1.1 isn't), and the GitHub Pages workflow runs
+it before publishing.
 
 ## Docker (recommended)
 
@@ -75,7 +82,8 @@ RACK_ENV=production DOCS_ORIGIN=/docs FORCE_SSL=false SELF_HOSTED=true \
 
 [`.github/workflows/pages.yml`](.github/workflows/pages.yml) publishes the app as a static
 site at <https://icaic-official.github.io/devdocs/> on every push to `main` (or by hand from
-the Actions tab). The server only renders a few pages, so `thor icaic:export_pages` renders
+the Actions tab), after `thor icaic:status` has checked the docs' releases. The server
+only renders a few pages, so `thor icaic:export_pages` renders
 them once and copies them with the docs and assets into a directory GitHub Pages serves.
 Deep links like `/devdocs/python~3.13/library/os` have no file, so Pages answers them with
 `404.html`, which hands the path to the app.
@@ -118,8 +126,11 @@ added by a hosting proxy must be configured separately from the app.
    parses the pages of docs scraped from files (e.g. the Hugging Face ones) in parallel.
    Scrapers skip pages that fail to download, so compare the new package's page count with
    the old one's (`tar xzf … db.json`) and build again if pages are missing.
-3. Set the entry's `doc` in `config/icaic_docs.yml` to the doc's slug.
+3. Set the entry's `doc` in `config/icaic_docs.yml` to the doc's slug, and its `version`
+   to the version the appendix lists. To remove a doc the appendix no longer lists, delete
+   its entry and its package.
 4. Commit the scraper, the package and the config, then rebuild the image.
 
-`thor icaic:status` lists every appendix item with the doc that covers it, and where
-it's installed from.
+`thor icaic:status` lists every appendix item with the doc that covers it, where it's
+installed from and the release installed, and exits with an error if a release isn't of
+the listed version.
